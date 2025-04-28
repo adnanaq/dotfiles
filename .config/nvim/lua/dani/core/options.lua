@@ -20,7 +20,6 @@ opt.autoindent = true -- copy indent from current line when starting new one
 vim.o.ignorecase = true -- Case-insensitive searching UNLESS \C or capital in search (default: false)
 vim.o.smartcase = true -- Smart case (default: false)
 
-
 vim.o.cursorline = false -- Highlight the current line (default: false)
 
 -- turn on termguicolors for tokyonight colorscheme to work
