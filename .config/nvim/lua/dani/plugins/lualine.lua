@@ -61,6 +61,7 @@ return {
             cond = lazy_status.has_updates,
             color = { fg = "#ff9e64" },
           },
+          { function() return vim.api.nvim_call_function("codeium#GetStatusString", {}) end },
           { "encoding" },
           { "fileformat" },
           { "filetype" },

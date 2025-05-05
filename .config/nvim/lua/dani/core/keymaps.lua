@@ -53,3 +53,9 @@ keymap.set('n', '<leader>lw', '<cmd>set wrap!<CR>', { desc = "Wrap line" }) --  
 -- Stay in indent mode
 keymap.set('v', '<', '<gv', { desc = "Indent left and keep selection" }) -- Indent left and keep selection
 keymap.set('v', '>', '>gv', { desc = "Indent right and keep selection" }) -- Indent right and keep selection
+
+-- Keep last yanked when pasting
+keymap.set('v', 'p', '"_dP', { desc = "Keep last yanked when pasting" })
+
+-- delete single character without copying into register
+keymap.set('n', 'x', '"_x', { desc = "delete single character without copying into register" })
