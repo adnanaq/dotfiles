@@ -107,7 +107,7 @@ diverged = " $count "
 untracked = "🤷 $count "
 stashed = "‍📦 $count "
 modified = "פֿ $count "
-staged = "[ $count ]"
+staged = " $count "
 renamed = " $count "
 deleted = "🗑 $count "
 

@@ -43,7 +43,7 @@ zinit light zsh-users/zsh-completions
 zinit light zsh-users/zsh-autosuggestions
 zinit light Aloxaf/fzf-tab
 # Snippets
-zinit snippet OMZP::git
+# zinit snippet OMZP::git
 
 # 5. Prompt (Starship) — early so prompt is styled as shell starts
 eval "$(starship init zsh)"
