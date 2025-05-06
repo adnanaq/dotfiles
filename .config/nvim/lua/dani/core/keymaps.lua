@@ -59,3 +59,7 @@ keymap.set('v', 'p', '"_dP', { desc = "Keep last yanked when pasting" })
 
 -- delete single character without copying into register
 keymap.set('n', 'x', '"_x', { desc = "delete single character without copying into register" })
+
+-- Oil file explorer
+keymap.set("n", "-", "<cmd>Oil<CR>", { desc = "Open file explorer" }) -- open file explorer
+keymap.set("n", "<leader>ee", ":e .<CR>", { desc = "Open Oil at CWD" }) -- open Oil at CWD

@@ -3,7 +3,7 @@ return {
   event = { "BufReadPre", "BufNewFile" },
   dependencies = {
     "hrsh7th/cmp-nvim-lsp",
-    "github/copilot.vim",
+    -- "github/copilot.vim",
     { "antosha417/nvim-lsp-file-operations", config = true },
     { "folke/neodev.nvim", opts = {} },
   },
@@ -159,6 +159,11 @@ return {
       ["gopls"] = function()  -- Go language server
         lspconfig["gopls"].setup({
           capabilities = capabilities,
+          settings = {
+            gopls = {
+                gofumpt = true
+            }
+          }
         })
       end,
       ["pyright"] = function()  -- Python language server

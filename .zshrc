@@ -1,3 +1,5 @@
+# zmodload zsh/zprof
+
 start_time=$(date +%s%3N)
 
 # 1. Environment variables and paths — keep these at the top (fast, no evals)
@@ -54,11 +56,18 @@ zinit cdreplay -q
 
 # 7. History behavior
 HISTSIZE=10000
-HISTFILE=~/.zsh_history
 SAVEHIST=$HISTSIZE
+HISTFILE=~/.zsh_history
 HISTDUP=erase
-setopt  appendhistory sharehistory hist_ignore_space \
-        hist_save_no_dups hist_ignore_dups hist_ignore_all_dups hist_find_no_dups
+setopt inc_append_history
+setopt appendhistory
+setopt sharehistory
+setopt hist_ignore_space
+setopt hist_save_no_dups
+setopt hist_ignore_dups
+setopt hist_ignore_all_dups
+setopt hist_find_no_dups
+setopt hist_reduce_blanks
 
 # 8. History key bindings
 bindkey -e
@@ -76,7 +85,7 @@ eval "$(zoxide init --cmd cd zsh)"
 zstyle ':completion:*' matcher-list 'm:{a-z}={A-Za-z}'
 zstyle ':completion:*' list-colors "${(s.:.)LS_COLORS}"
 zstyle ':completion:*' menu no
-zstyle ':fzf-tab:complete:cd:*' fzf-preview 'ls --color $realpath'
+zstyle ':fzf-tab:complete:cd:*' fzf-preview 'ls --color=always $realpath'
 
 # 11. Aliases
 alias ls='ls --color'
@@ -84,3 +93,5 @@ alias ls='ls --color'
 end_time=$(date +%s%3N)
 elapsed_time=$((end_time - start_time))
 echo "Zsh startup time: ${elapsed_time}ms"
+
+# zprof
