@@ -2,7 +2,7 @@
 vim.g.mapleader = " "
 
 -- Disable the spacebar key's default behavior in Normal and Visual modes
-vim.keymap.set({ 'n', 'v' }, '<Space>', '<Nop>', { silent = true })
+vim.keymap.set({ "n", "v" }, "<Space>", "<Nop>", { silent = true })
 
 local keymap = vim.keymap -- for conciseness
 
@@ -23,10 +23,10 @@ keymap.set("n", "<leader>+", "<C-a>", { desc = "Increment number" }) -- incremen
 keymap.set("n", "<leader>-", "<C-x>", { desc = "Decrement number" }) -- decrement
 
 -- Resize with arrows
-keymap.set('n', '<Up>', ':resize -2<CR>', { desc = "Resize window height top" }) -- Resize window height top
-keymap.set('n', '<Down>', ':resize +2<CR>', { desc = "Resize window height bottom" }) -- Resize window height bottom
-keymap.set('n', '<Left>', ':vertical resize -2<CR>', { desc = "Resize window width to left" }) -- Resize window width to left
-keymap.set('n', '<Right>', ':vertical resize +2<CR>', { desc = "Resize window widthto right" }) -- Resize window widthto right
+keymap.set("n", "<Up>", ":resize -2<CR>", { desc = "Resize window height top" }) -- Resize window height top
+keymap.set("n", "<Down>", ":resize +2<CR>", { desc = "Resize window height bottom" }) -- Resize window height bottom
+keymap.set("n", "<Left>", ":vertical resize -2<CR>", { desc = "Resize window width to left" }) -- Resize window width to left
+keymap.set("n", "<Right>", ":vertical resize +2<CR>", { desc = "Resize window widthto right" }) -- Resize window widthto right
 
 -- window management
 keymap.set("n", "<leader>sv", "<C-w>v", { desc = "Split window vertically" }) -- split window vertically
@@ -35,10 +35,10 @@ keymap.set("n", "<leader>se", "<C-w>=", { desc = "Make splits equal size" }) -- 
 keymap.set("n", "<leader>sx", "<cmd>close<CR>", { desc = "Close current split" }) -- close current split window
 
 -- Buffers
-keymap.set('n', '<Tab>', ':bnext<CR>', { desc = "Go to next buffer" }) --  go to next buffer
-keymap.set('n', '<S-Tab>', ':bprevious<CR>', { desc = "Go to previous buffer" }) --  go to previous buffer
-keymap.set('n', '<leader>bx', ':bdelete!<CR>', { desc = "Close current buffer" }) -- close current buffer
-keymap.set('n', '<leader>bb', '<cmd> enew <CR>', { desc = "Open new buffer" }) -- open new buffer
+keymap.set("n", "<Tab>", ":bnext<CR>", { desc = "Go to next buffer" }) --  go to next buffer
+keymap.set("n", "<S-Tab>", ":bprevious<CR>", { desc = "Go to previous buffer" }) --  go to previous buffer
+keymap.set("n", "<leader>bx", ":bdelete!<CR>", { desc = "Close current buffer" }) -- close current buffer
+keymap.set("n", "<leader>bb", "<cmd> enew <CR>", { desc = "Open new buffer" }) -- open new buffer
 
 -- Tabs
 keymap.set("n", "<leader>to", ":tabnew<CR>", { desc = "Open new tab" }) -- open new tab
@@ -48,17 +48,17 @@ keymap.set("n", "<leader>tp", ":tabp<CR>", { desc = "Go to previous tab" }) --  
 keymap.set("n", "<leader>tf", ":tabnew %<CR>", { desc = "Open current buffer in new tab" }) --  move current buffer to new tab
 
 -- Toggle line wrapping
-keymap.set('n', '<leader>lw', '<cmd>set wrap!<CR>', { desc = "Wrap line" }) --  Wrap line
+keymap.set("n", "<leader>lw", "<cmd>set wrap!<CR>", { desc = "Wrap line" }) --  Wrap line
 
 -- Stay in indent mode
-keymap.set('v', '<', '<gv', { desc = "Indent left and keep selection" }) -- Indent left and keep selection
-keymap.set('v', '>', '>gv', { desc = "Indent right and keep selection" }) -- Indent right and keep selection
+keymap.set("v", "<", "<gv", { desc = "Indent left and keep selection" }) -- Indent left and keep selection
+keymap.set("v", ">", ">gv", { desc = "Indent right and keep selection" }) -- Indent right and keep selection
 
 -- Keep last yanked when pasting
-keymap.set('v', 'p', '"_dP', { desc = "Keep last yanked when pasting" })
+keymap.set("v", "p", '"_dP', { desc = "Keep last yanked when pasting" })
 
 -- delete single character without copying into register
-keymap.set('n', 'x', '"_x', { desc = "delete single character without copying into register" })
+keymap.set("n", "x", '"_x', { desc = "delete single character without copying into register" })
 
 -- Oil file explorer
 keymap.set("n", "-", "<cmd>Oil<CR>", { desc = "Open file explorer" }) -- open file explorer

@@ -33,7 +33,7 @@ opt.backspace = "indent,eol,start" -- allow backspace on indent, end of line or 
 
 -- clipboard
 -- opt.clipboard:append("unnamedplus") -- use system clipboard as default register
-vim.o.clipboard = 'unnamedplus' -- Sync clipboard between OS and Neovim. (default: '')
+vim.o.clipboard = "unnamedplus" -- Sync clipboard between OS and Neovim. (default: '')
 
 -- split windows
 vim.o.splitbelow = true -- Force all horizontal splits to go below current window (default: false)
@@ -44,3 +44,4 @@ vim.o.swapfile = false -- Creates a swapfile (default: true)
 
 -- mouse support
 opt.mouse = "a" -- enable mouse support
+
