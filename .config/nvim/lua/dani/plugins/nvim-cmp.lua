@@ -25,6 +25,8 @@ return {
 
 		-- loads vscode style snippets from installed plugins (e.g. friendly-snippets)
 		require("luasnip.loaders.from_vscode").lazy_load()
+		vim.api.nvim_set_hl(0, "NormalFloat", { bg = "#1e1e2e" })
+		vim.api.nvim_set_hl(0, "FloatBorder", { fg = "#89b4fa", bg = "#1e1e2e" })
 
 		cmp.setup({
 			completion = {
@@ -58,6 +60,16 @@ return {
 					maxwidth = 50,
 					ellipsis_char = "...",
 				}),
+			},
+			window = {
+				documentation = {
+					border = "rounded", -- Options: 'single', 'double', 'rounded', 'solid', 'shadow'
+					winhighlight = "Normal:NormalFloat,FloatBorder:FloatBorder",
+				},
+				completion = {
+					winhighlight = "Normal:NormalFloat,FloatBorder:FloatBorder",
+					border = "shadow", -- Options: 'single', 'double', 'rounded', 'solid', 'shadow'
+				},
 			},
 		})
 	end,

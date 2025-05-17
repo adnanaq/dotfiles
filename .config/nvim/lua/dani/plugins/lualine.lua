@@ -52,7 +52,9 @@ return {
 		-- configure lualine with modified theme
 		lualine.setup({
 			options = {
-				theme = my_lualine_theme,
+				-- theme = my_lualine_theme,
+				-- theme = 'onedark',
+				theme = "OceanicNext",
 			},
 			sections = {
 				lualine_x = {
@@ -71,6 +73,7 @@ return {
 					{ "filetype" },
 				},
 			},
+			extensions = { "fugitive", "quickfix", "fzf", "lazy", "mason", "nvim-dap-ui", "oil", "trouble" },
 		})
 	end,
 }

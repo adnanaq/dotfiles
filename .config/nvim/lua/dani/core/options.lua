@@ -44,4 +44,3 @@ vim.o.swapfile = false -- Creates a swapfile (default: true)
 
 -- mouse support
 opt.mouse = "a" -- enable mouse support
-

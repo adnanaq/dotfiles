@@ -24,6 +24,11 @@ return {
 
 		telescope.setup({
 			defaults = {
+				layout_strategy = nil,
+				layout_config = nil,
+				prompt_prefix = "   ",
+				selection_caret = "  ",
+				multi_icon = "",
 				path_display = { "smart" },
 				mappings = {
 					i = {
@@ -39,6 +44,7 @@ return {
 
 		telescope.load_extension("fzf")
 		telescope.load_extension("noice")
+		telescope.load_extension("ui-select")
 
 		-- set keymaps
 		local keymap = vim.keymap -- for conciseness

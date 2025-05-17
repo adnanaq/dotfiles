@@ -1,2 +1,2 @@
-require("dani.core")
 require("dani.lazy")
+require("dani.core")

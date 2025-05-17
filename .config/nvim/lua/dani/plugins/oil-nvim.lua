@@ -1,11 +1,8 @@
 return {
 	"stevearc/oil.nvim",
-	---@module 'oil'
-	---@type oil.SetupOpts
 	opts = {},
-	-- Optional dependencies
-	dependencies = { { "echasnovski/mini.icons", opts = {} } },
-	-- dependencies = { "nvim-tree/nvim-web-devicons" }, -- use if you prefer nvim-web-devicons
+	-- dependencies = { { "echasnovski/mini.icons", opts = {} } },
+	dependencies = { "nvim-tree/nvim-web-devicons" }, -- use if you prefer nvim-web-devicons
 	-- Lazy loading is not recommended because it is very tricky to make it work correctly in all situations.
 	lazy = false,
 	config = function()
@@ -19,9 +16,20 @@ return {
 				is_always_hidden = function(name, _)
 					return name == ".git" or name == ".."
 				end,
+				view_options = {
+					open_url = function(url)
+						os.execute('explorer.exe "' .. url:gsub('"', '\\"') .. '"')
+					end,
+				},
 			},
 			win_options = {
 				wrap = true,
+				winblend = 0,
+			},
+			float = {
+				padding = 2,
+				max_width = 90,
+				max_height = 0,
 			},
 		})
 	end,

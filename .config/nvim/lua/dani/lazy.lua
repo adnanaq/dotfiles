@@ -11,6 +11,14 @@ if not vim.loop.fs_stat(lazypath) then
 end
 vim.opt.rtp:prepend(lazypath)
 
+-- Set leader key
+vim.g.mapleader = " "
+
+vim.ui.open = function(path)
+	local escaped = path:gsub('"', '\\"')
+	os.execute('explorer.exe "' .. escaped .. '"')
+end
+
 require("lazy").setup({ { import = "dani.plugins" }, { import = "dani.plugins.lsp" } }, {
 	checker = {
 		enabled = true,

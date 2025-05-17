@@ -6,20 +6,31 @@ return {
 
 		conform.setup({
 			formatters_by_ft = {
-				javascript = { "prettier" },
-				typescript = { "prettier" },
-				javascriptreact = { "prettier" },
-				typescriptreact = { "prettier" },
-				svelte = { "prettier" },
-				css = { "prettier" },
-				html = { "prettier" },
-				json = { "prettier" },
-				yaml = { "prettier" },
-				markdown = { "prettier" },
-				graphql = { "prettier" },
+				bash = { "beautysh" },
+				css = { "prettierd", "prettier", stop_after_first = true },
+				erb = { "htmlbeautifier" },
+				go = { "gofumpt" },
+				graphql = { "prettierd", "prettier", stop_after_first = true },
+				html = { "htmlbeautifier", "prettier", stop_after_first = true },
+				java = { "google-java-format" },
+				javascript = { "prettierd", "prettier", stop_after_first = true },
+				javascriptreact = { "prettierd", "prettier", stop_after_first = true },
+				json = { "prettierd", "prettier", stop_after_first = true },
+				kotlin = { "ktlint" },
 				liquid = { "prettier" },
 				lua = { "stylua" },
+				markdown = { "prettierd", "prettier", stop_after_first = true },
+				proto = { "buf" },
 				python = { "isort", "black" },
+				ruby = { "standardrb" },
+				rust = { "rustfmt" },
+				scss = { "prettierd", "prettier", stop_after_first = true },
+				svelte = { "prettierd", "prettier", stop_after_first = true },
+				sh = { "shellcheck" },
+				typescript = { "prettierd", "prettier", stop_after_first = true },
+				typescriptreact = { "prettierd", "prettier", stop_after_first = true },
+				xml = { "xmllint" },
+				yaml = { "yamlfix", "prettier", stop_after_first = true },
 			},
 			format_on_save = {
 				lsp_fallback = true,
@@ -36,7 +47,7 @@ return {
 			})
 		end, { desc = "Format file or range (in visual mode)" })
 
-    -- Format entire project
+		-- Format entire project
 		vim.api.nvim_create_user_command("FormatDirectory", function()
 			local scan = require("plenary.scandir")
 			local conform = require("conform")
@@ -69,7 +80,7 @@ return {
 			end)
 		end, { desc = "Format all files in the current directory using conform" })
 
-     -- Keymap to format entire project
-     vim.keymap.set("n", "<leader>mP", "<cmd>FormatDirectory<CR>", { desc = "Format entire project" })
+		-- Keymap to format entire project
+		vim.keymap.set("n", "<leader>mP", "<cmd>FormatDirectory<CR>", { desc = "Format entire project" })
 	end,
 }
