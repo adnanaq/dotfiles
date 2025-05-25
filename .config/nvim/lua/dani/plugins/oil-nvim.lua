@@ -16,11 +16,9 @@ return {
 				is_always_hidden = function(name, _)
 					return name == ".git" or name == ".."
 				end,
-				view_options = {
-					open_url = function(url)
-						os.execute('explorer.exe "' .. url:gsub('"', '\\"') .. '"')
-					end,
-				},
+				open_url = function(url)
+					os.execute('explorer.exe "' .. url:gsub('"', '\\"') .. '"')
+				end,
 			},
 			win_options = {
 				wrap = true,
@@ -28,8 +26,9 @@ return {
 			},
 			float = {
 				padding = 2,
-				max_width = 90,
+				max_width = 60,
 				max_height = 0,
+				border = "rounded",
 			},
 		})
 	end,

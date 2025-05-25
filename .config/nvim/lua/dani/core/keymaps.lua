@@ -28,10 +28,15 @@ keymap.set("n", "<Left>", ":vertical resize -2<CR>", { desc = "Resize window wid
 keymap.set("n", "<Right>", ":vertical resize +2<CR>", { desc = "Resize window widthto right" }) -- Resize window widthto right
 
 -- window management
-keymap.set("n", "<leader>sv", "<C-w>v", { desc = "Split window vertically" }) -- split window vertically
-keymap.set("n", "<leader>sh", "<C-w>s", { desc = "Split window horizontally" }) -- split window horizontally
-keymap.set("n", "<leader>se", "<C-w>=", { desc = "Make splits equal size" }) -- make split windows equal width & height
-keymap.set("n", "<leader>sx", "<cmd>close<CR>", { desc = "Close current split" }) -- close current split window
+wk.add({
+	{ "<leader>s", group = "Window Management" },
+	{ "<leader>sv", "<C-w>v", desc = "Split window vertically", mode = "n" }, -- split window vertically
+	{ "<leader>sh", "<C-w>s", desc = "Split window horizontally" }, -- split window horizontally
+	{ "<leader>se", "<C-w>=", desc = "Make splits equal size", mode = "n" }, -- make split windows equal width & height
+	{ "<leader>sx", "<cmd>close<CR>", desc = "Close current split", mode = "n" }, -- close current split window
+	-- Vim Maximizer
+	{ "<leader>sm", "<cmd>MaximizerToggle<CR>", desc = "Maximize/minimize a split", mode = "n" }, -- maximize/minimize a split
+})
 
 -- Navigate between splits
 -- keymap.set('n', '<C-k>', ':wincmd k<CR>', opts)
@@ -43,12 +48,16 @@ keymap.set("n", "<leader>sx", "<cmd>close<CR>", { desc = "Close current split" }
 keymap.set("n", "<leader>bx", ":bdelete!<CR>", { desc = "Close current buffer" }) -- close current buffer
 keymap.set("n", "<leader>bb", "<cmd> enew <CR>", { desc = "Open new buffer" }) -- open new buffer
 
--- Tabs
-keymap.set("n", "<leader>to", ":tabnew<CR>", { desc = "Open new tab" }) -- open new tab
-keymap.set("n", "<leader>tx", ":tabclose<CR>", { desc = "Close current tab" }) -- close current tab
-keymap.set("n", "<leader>tn", ":tabn<CR>", { desc = "Go to next tab" }) --  go to next tab
-keymap.set("n", "<leader>tp", ":tabp<CR>", { desc = "Go to previous tab" }) --  go to previous tab
-keymap.set("n", "<leader>tf", ":tabnew %<CR>", { desc = "Open current buffer in new tab" }) --  move current buffer to new tab
+-- -- Tabs
+-- wk.add({
+-- 	{ "<leader>T", group = "Tabs" },
+-- 	{ "<leader>To", ":tabnew<CR>", desc = "Open new tab", mode = "n" }, -- open new tab
+-- 	{ "<leader>Tx", ":tabclose<CR>", desc = "Close current tab", mode = "n" }, -- close current tab
+-- 	{ "<leader>Tn", ":tabn<CR>", desc = "Go to next tab", mode = "n" }, --  go to next tab
+-- 	{ "<leader>Tp", ":tabp<cr>", desc = "go to previous tab", mode = "n" }, --  go to previous tab
+-- 	{ "<leader>Tf", ":tabnew %<cr>", desc = "open current buffer in new tab", mode = "n" }, --  move current buffer to new tab})
+-- })
+--
 keymap.set("n", "<Tab>", ":bnext<CR>", { desc = "Go to next buffer" }) --  go to next buffer
 keymap.set("n", "<S-Tab>", ":bprevious<CR>", { desc = "Go to previous buffer" }) --  go to previous buffer
 
@@ -67,60 +76,154 @@ keymap.set("n", "x", '"_x', { desc = "delete single character without copying in
 
 -- Oil file explorer
 keymap.set("n", "-", "<cmd>Oil<CR>", { desc = "Open file explorer" }) -- open file explorer
-keymap.set("n", "<leader>ee", ":e .<CR>", { desc = "Open Oil at CWD" }) -- open Oil at CWD
+keymap.set("n", "<leader>-", require("oil").toggle_float, { desc = "Open Oil at CWD" }) -- open Oil in float
 
 -- DAP
-keymap.set("n", "<leader>db", function()
-	require("dap").toggle_breakpoint()
-end, { desc = "Toggle breakpoint" }) -- toggle breakpoint
-keymap.set("n", "<leader>dB", function()
-	vim.ui.input({ prompt = "Breakpoint condition: " }, function(input)
-		if input then
-			require("dap").set_breakpoint(input)
-		end
-	end)
-end, { desc = "Set breakpoint with condition" }) -- set breakpoint with condition
-keymap.set("n", "<leader>dA", function()
-	require("dap").clear_breakpoints()
-end, { desc = "Clear all breakpoint" }) -- clear all breakpoints
-keymap.set("n", "<leader>dc", function()
-	require("dap").continue()
-end, { desc = "Continue" }) -- continue
-keymap.set("n", "<leader>dC", function()
-	require("dap").run_to_cursor()
-end, { desc = "Run to cursor" }) -- run to cursor
-keymap.set("n", "<leader>di", function()
-	require("dap").step_into()
-end, { desc = "Step into" }) -- step into
-keymap.set("n", "<leader>do", function()
-	require("dap").step_over()
-end, { desc = "Step over" }) -- step over
-keymap.set("n", "<leader>dO", function()
-	require("dap").step_out()
-end, { desc = "Step out" }) -- step out
-keymap.set("n", "<leader>dp", function()
-	require("dap").step_back()
-end, { desc = "Step back" }) -- step back
-keymap.set("n", "<leader>dl", function()
-	require("dap").run_last()
-end, { desc = "Run last" }) -- run last
-keymap.set("n", "<leader>dt", function()
-	require("dap").repl.toggle()
-end, { desc = "Toggle REPL" }) -- toggle REPL
-keymap.set("n", "<leader>dR", function()
-	require("dap").restart()
-end, { desc = "Restart DAP" }) -- restart DAP
-keymap.set("n", "<leader>dT", function()
-	require("dap").terminate()
-end, { desc = "Terminate" }) -- terminate
+wk.add({
+	{ "<leader>d", group = "DAP" },
+	{
+		"<leader>db",
+		function()
+			require("dap").toggle_breakpoint()
+		end,
+		desc = "Toggle breakpoint",
+		mode = "n",
+	}, -- toggle breakpoint
+	{
+		"<leader>dB",
+		function()
+			vim.ui.input({ prompt = "Breakpoint condition: " }, function(input)
+				if input then
+					require("dap").set_breakpoint(input)
+				end
+			end)
+		end,
+		desc = "Set breakpoint with condition",
+		mode = "n",
+	}, -- set breakpoint with condition
+	{
+		"<leader>dA",
+		function()
+			require("dap").clear_breakpoints()
+		end,
+		desc = "Clear all breakpoint",
+		mode = "n",
+	}, -- clear all breakpoints
+	{
+		"<leader>dc",
+		function()
+			require("dap").continue()
+		end,
+		desc = "Continue",
+		mode = "n",
+	}, -- continue
+	{
+		"<leader>dC",
+		function()
+			require("dap").run_to_cursor()
+		end,
+		desc = "Run to cursor",
+		mode = "n",
+	}, -- run to cursor
+	{
+		"<leader>di",
+		function()
+			require("dap").step_into()
+		end,
+		desc = "Step into",
+		mode = "n",
+	}, -- step into
+	{
+		"<leader>do",
+		function()
+			require("dap").step_over()
+		end,
+		desc = "Step over",
+		mode = "n",
+	}, -- step over
+	{
+		"<leader>dO",
+		function()
+			require("dap").step_out()
+		end,
+		desc = "Step out",
+		mode = "n",
+	}, -- step out
+	{
+		"<leader>dp",
+		function()
+			require("dap").step_back()
+		end,
+		desc = "Step back",
+		mode = "n",
+	}, -- step back
+	{
+		"<leader>dl",
+		function()
+			require("dap").run_last()
+		end,
+		desc = "Run last",
+		mode = "n",
+	}, -- run last
+	{
+		"<leader>dt",
+		function()
+			require("dap").repl.toggle()
+		end,
+		desc = "Toggle REPL",
+		mode = "n",
+	}, -- toggle REPL
+	{
+		"<leader>dR",
+		function()
+			require("dap").restart()
+		end,
+		desc = "Restart DAP",
+		mode = "n",
+	}, -- restart DAP
+	{
+		"<leader>dT",
+		function()
+			require("dap").terminate()
+		end,
+		desc = "Terminate",
+		mode = "n",
+	}, -- terminate
+	{
+		"<leader>dw",
+		function()
+			require("dap.ui.widgets").hover()
+		end,
+		desc = "Debug Widgets",
+		mode = "n",
+	}, -- debug widget
+	{
+		"<leader>dP",
+		function()
+			require("dap").pause()
+		end,
+		desc = "Debug Pause",
+		mode = "n",
+	}, -- debug pause
 
--- DAP UI
-keymap.set("n", "<leader>d[", function()
-	require("dapui").open()
-end, { desc = "Open" }) -- Open DAP UI
-keymap.set("n", "<leader>d]", function()
-	require("dapui").close()
-end, { desc = "Close" }) -- Open DAP UI
+	-- DAP UI
+	{
+		"<leader>d[",
+		function()
+			require("dapui").open()
+		end,
+		desc = "Open",
+		mode = "n",
+	}, -- Open DAP UI
+	{
+		"<leader>d]",
+		function()
+			require("dapui").close()
+		end,
+		desc = "Close",
+		mode = "n",
+	}, -- Close DAP UI
+})
 
 keymap.set("n", "<space>?", function()
 	require("dapui").eval(nil, { enter = true })
@@ -133,21 +236,21 @@ vim.api.nvim_create_autocmd("FileType", {
 		local jdtls = require("jdtls")
 		local opts = { buffer = 0 }
 
-		keymap.set("n", "<leader>Jo", jdtls.organize_imports, { desc = "[J]ava [O]rganize Imports", buffer = true })
-		keymap.set("n", "<leader>Jv", jdtls.extract_variable, { desc = "[J]ava Extract [V]ariable", buffer = true })
+		keymap.set("n", "<leader>Jo", jdtls.organize_imports, { desc = "Organize imports", buffer = true })
+		keymap.set("n", "<leader>Jv", jdtls.extract_variable, { desc = "Extract Variable", buffer = true })
 		keymap.set("v", "<leader>Jv", function()
 			jdtls.extract_variable(true)
-		end, { desc = "[J]ava Extract [V]ariable", buffer = true })
-		keymap.set("n", "<leader>Jc", jdtls.extract_constant, { desc = "[J]ava Extract [C]onstant", buffer = true })
+		end, { desc = "Extract Variable", buffer = true })
+		keymap.set("n", "<leader>Jc", jdtls.extract_constant, { desc = "Extract Constant", buffer = true })
 		keymap.set("v", "<leader>Jc", function()
 			jdtls.extract_constant(true)
-		end, { desc = "[J]ava Extract [C]onstant", buffer = true })
-		keymap.set("n", "<leader>Jm", jdtls.test_nearest_method, { desc = "[J]ava Test [M]ethod", buffer = true })
+		end, { desc = "Extract Constant", buffer = true })
+		keymap.set("n", "<leader>Jm", jdtls.test_nearest_method, { desc = "Test Method", buffer = true })
 		keymap.set("v", "<leader>Jm", function()
 			jdtls.test_nearest_method(true)
-		end, { desc = "[J]ava Test [M]ethod", buffer = true })
-		keymap.set("n", "<leader>JC", jdtls.test_class, { desc = "[J]ava Test [C]lass", buffer = true })
-		keymap.set("n", "<leader>Ju", "<Cmd>JdtUpdateConfig<CR>", { desc = "[J]ava [U]pdate Config", buffer = true })
+		end, { desc = "Test Method", buffer = true })
+		keymap.set("n", "<leader>JC", jdtls.test_class, { desc = "Test Class", buffer = true })
+		keymap.set("n", "<leader>Ju", "<Cmd>JdtUpdateConfig<CR>", { desc = "Update Config", buffer = true })
 	end,
 })
 
@@ -164,9 +267,6 @@ end, { expr = true, silent = true })
 keymap.set("i", "<C-s>", function()
 	return vim.fn["codeium#Clear"]()
 end, { expr = true, silent = true })
-
--- Vim Maximizer
-keymap.set("n", "<leader>sm", "<cmd>MaximizerToggle<CR>", { desc = "Maximize/minimize a split" }) -- maximize/minimize a split
 
 -- Auto Session
 keymap.set("n", "<leader>wr", "<cmd>SessionRestore<CR>", { desc = "Restore session for cwd" }) -- restore last workspace session for current directory
@@ -186,9 +286,3 @@ wk.add({
 	{ "<leader>xl", "<cmd>Trouble loclist toggle<CR>", desc = "Open trouble location list", mode = "n" }, -- open trouble location list
 	{ "<leader>xt", "<cmd>Trouble todo toggle<CR>", desc = "Open todos in trouble", mode = "n" }, -- open todos in trouble
 })
-
--- keymap.set("n", "<leader>xw", "<cmd>Trouble diagnostics toggle<CR>", { desc = "Open trouble workspace diagnostics" }) -- open trouble workspace diagnostics
--- keymap.set("n", "<leader>xd", "<cmd>Trouble diagnostics toggle filter.buf=0<CR>", { desc = "Open trouble document diagnostics", }) -- open trouble document diagnostics
--- keymap.set("n", "<leader>xq", "<cmd>Trouble quickfix toggle<CR>", { desc = "Open trouble quickfix list" }) -- open trouble quickfix list
--- keymap.set("n", "<leader>xl", "<cmd>Trouble loclist toggle<CR>", { desc = "Open trouble location list" }) -- open trouble location list
--- keymap.set("n", "<leader>xt", "<cmd>Trouble todo toggle<CR>", { desc = "Open todos in trouble" }) -- open todos in trouble

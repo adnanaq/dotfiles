@@ -60,7 +60,14 @@ local config = {
 
 	-- This is the default if not provided, you can remove it. Or adjust as needed.
 	-- One dedicated LSP server & client will be started per unique root_dir
-	root_dir = require("jdtls.setup").find_root({ ".git", "mvnw", "gradlew", "pom.xml", "build.gradle" }),
+	root_dir = require("jdtls.setup").find_root({
+		".git",
+		"mvnw",
+		"gradlew",
+		"pom.xml",
+		"build.gradle",
+		"build.gradle.kts",
+	}),
 
 	-- Here you can configure eclipse.jdt.ls specific settings
 	-- See https://github.com/eclipse/eclipse.jdt.ls/wiki/Running-the-JAVA-LS-server-from-the-command-line#initialize-request
@@ -77,20 +84,8 @@ local config = {
 				-- The runtimes' name parameter needs to match a specific Java execution environments.  See https://github.com/eclipse-jdtls/eclipse.jdt.ls/wiki/Running-the-JAVA-LS-server-from-the-command-line#initialize-request and search "ExecutionEnvironment".
 				runtimes = {
 					{
-						name = "JavaSE-1.8",
-						path = "/usr/lib/jvm/java-8-openjdk-amd64",
-					},
-					{
-						name = "JavaSE-11",
-						path = "/usr/lib/jvm/java-11-openjdk-amd64",
-					},
-					{
 						name = "JavaSE-17",
 						path = "/usr/lib/jvm/java-17-openjdk-amd64",
-					},
-					{
-						name = "JavaSE-19",
-						path = "/usr/lib/jvm/java-19-openjdk-amd64",
 					},
 					{
 						name = "JavaSE-21",

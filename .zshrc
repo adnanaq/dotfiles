@@ -9,7 +9,8 @@ export PATH="$PATH:$HOME/go/bin" # Go package documentation
 export CGO_ENABLED=1 # Enable cgo to allow Go's race detector to function properly
 export PATH="$PATH:$HOME/.local/bin" # Protocol Buffer Compiler
 export PATH="$PATH:/opt/nvim-linux-x86_64/bin" # Neovim path for global access
-
+export PATH="$PATH:$HOME/kafka_2.13-4.0.0/bin" # Kafka
+export PATH="$HOME/.local/bin:$PATH" #Fdfind
 # 2. Fast-loading utility functions or static sources
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
@@ -58,16 +59,18 @@ zinit cdreplay -q
 HISTSIZE=10000
 SAVEHIST=$HISTSIZE
 HISTFILE=~/.zsh_history
-HISTDUP=erase
-setopt inc_append_history
+
 setopt appendhistory
 setopt sharehistory
-setopt hist_ignore_space
-setopt hist_save_no_dups
-setopt hist_ignore_dups
-setopt hist_ignore_all_dups
-setopt hist_find_no_dups
-setopt hist_reduce_blanks
+setopt HIST_EXPIRE_DUPS_FIRST
+setopt HIST_IGNORE_SPACE
+setopt HIST_IGNORE_ALL_DUPS
+setopt HIST_SAVE_NO_DUPS
+setopt HIST_IGNORE_DUPS
+setopt HIST_FIND_NO_DUPS
+setopt HIST_REDUCE_BLANKS
+setopt HIST_VERIFY
+
 
 # 8. History key bindings
 bindkey -e
@@ -88,7 +91,12 @@ zstyle ':completion:*' menu no
 zstyle ':fzf-tab:complete:cd:*' fzf-preview 'ls --color=always $realpath'
 
 # 11. Aliases
-alias ls='ls --color'
+# alias ls='ls --color'
+alias ls='eza --icons always'
+alias ll='eza -alh'
+alias li='eza -lhI "node_modules" --tree --icons always'
+alias tree='eza --tree --icons always'
+alias cat='batcat'
 
 end_time=$(date +%s%3N)
 elapsed_time=$((end_time - start_time))

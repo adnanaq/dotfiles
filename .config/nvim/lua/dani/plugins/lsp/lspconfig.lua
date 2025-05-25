@@ -8,7 +8,7 @@ return {
 	},
 	config = function()
 		local lspconfig = require("lspconfig")
-		
+
 		-- ✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦
 		-- ⟡ Diagnostic & Keybindings
 		-- ✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦
@@ -21,7 +21,7 @@ return {
 			vim.keymap.set("n", "<leader>D", function()
 				require("telescope.builtin").diagnostics({ bufnr = 0 })
 			end, opts("Buffer Diagnostics"))
-			
+
 			vim.keymap.set("n", "<leader>dd", vim.diagnostic.open_float, opts("Show line diagnostics"))
 			vim.keymap.set("n", "[d", vim.diagnostic.goto_prev, opts("Go to Previous Diagnostic"))
 			vim.keymap.set("n", "]d", vim.diagnostic.goto_next, opts("Go to Next Diagnostic"))
@@ -58,7 +58,7 @@ return {
 
 		local function setup_document_highlight(event, client)
 			local highlight_augroup = vim.api.nvim_create_augroup("UserLspHighlight", { clear = false })
-			
+
 			vim.api.nvim_create_autocmd({ "CursorHold", "CursorHoldI" }, {
 				buffer = event.buf,
 				group = highlight_augroup,
@@ -99,7 +99,7 @@ return {
 					map("K", vim.lsp.buf.hover, "Show documentation in hover")
 
 					-- Code navigation and refactoring
-					map("gra", vim.lsp.buf.code_action, "Code Actions", {"n", "v"})
+					map("gra", vim.lsp.buf.code_action, "Code Actions", { "n", "v" })
 					map("grn", vim.lsp.buf.rename, "Rename")
 					map("grr", require("telescope.builtin").lsp_references, "Go to References")
 					map("grd", require("telescope.builtin").lsp_definitions, "Go to Definitions")
@@ -107,24 +107,24 @@ return {
 					map("gri", require("telescope.builtin").lsp_implementations, "Go to Implementations")
 					map("grt", require("telescope.builtin").lsp_type_definitions, "Type Definitions")
 					map("grS", ":LspRestart<CR>", "Restart")
-					map('grs', vim.lsp.buf.document_symbol, 'Document Symbols')
-					map('grk', function()
-						vim.lsp.buf.signature_help({ border = 'single' })
-					end, 'Signature Help')
-					
+					map("grs", vim.lsp.buf.document_symbol, "Document Symbols")
+					map("grk", function()
+						vim.lsp.buf.signature_help({ border = "single" })
+					end, "Signature Help")
+
 					-- Workspace management
-					map('grwa', vim.lsp.buf.add_workspace_folder, 'Add Workspace Folder')
-					map('grwr', vim.lsp.buf.remove_workspace_folder, 'Remove Workspace Folder')
-					map('grwl', function()
+					map("grwa", vim.lsp.buf.add_workspace_folder, "Add Workspace Folder")
+					map("grwr", vim.lsp.buf.remove_workspace_folder, "Remove Workspace Folder")
+					map("grwl", function()
 						print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
-					end, 'List Workspace Folder')				
+					end, "List Workspace Folder")
 					map("grws", function()
 						vim.lsp.buf.workspace_symbol()
 					end, "Workspace Symbol")
 
 					-- Get client
 					local client = vim.lsp.get_client_by_id(event.data.client_id)
-					
+
 					-- Setup document highlighting
 					if client and client:supports_method(vim.lsp.protocol.Methods.textDocument_documentHighlight) then
 						setup_document_highlight(event, client)
@@ -141,15 +141,12 @@ return {
 		end
 
 		-- ✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦
-		-- ⟡ Server configurations 
+		-- ⟡ Server configurations
 		-- ✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦
 		local function setup_capabilities()
 			local lsp_defaults = lspconfig.util.default_config
-			lsp_defaults.capabilities = vim.tbl_deep_extend(
-				"force", 
-				lsp_defaults.capabilities, 
-				require("cmp_nvim_lsp").default_capabilities()
-			)
+			lsp_defaults.capabilities =
+				vim.tbl_deep_extend("force", lsp_defaults.capabilities, require("cmp_nvim_lsp").default_capabilities())
 			return lsp_defaults.capabilities
 		end
 
@@ -157,7 +154,7 @@ return {
 			local runtime_path = vim.split(package.path, ";")
 			table.insert(runtime_path, "lua/?.lua")
 			table.insert(runtime_path, "lua/?/init.lua")
-			
+
 			lspconfig.lua_ls.setup({
 				on_init = function(client)
 					local path = client.workspace_folders[1].name
@@ -188,7 +185,7 @@ return {
 							paramType = true,
 							paramName = "All",
 							semicolon = "Disable",
-						}
+						},
 					},
 				},
 			})
@@ -256,18 +253,18 @@ return {
 			lspconfig.ts_ls.setup({
 				init_options = {
 					preferences = {
-						includeInlayParameterNameHints = 'all',
+						includeInlayParameterNameHints = "all",
 						includeInlayParameterNameHintsWhenArgumentMatchesName = true,
 						includeInlayFunctionParameterTypeHints = true,
 						includeInlayVariableTypeHints = true,
 						includeInlayPropertyDeclarationTypeHints = true,
 						includeInlayFunctionLikeReturnTypeHints = true,
 						includeInlayEnumMemberValueHints = true,
-						importModuleSpecifierPreference = 'non-relative',
+						importModuleSpecifierPreference = "non-relative",
 					},
 				},
 				-- filetypes = { 'typescript', 'javascript', 'javascriptreact', 'typescriptreact', 'vue' },
-	            -- on_attach = function(client, bufnr)
+				-- on_attach = function(client, bufnr)
 				--     client.server_capabilities.document_formatting = false
 				--     client.server_capabilities.document_range_formatting = false
 				--     on_attach(client, bufnr)
@@ -277,7 +274,23 @@ return {
 			-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ --
 			-- ➤ Python - Python language support                --
 			-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ --
-			lspconfig.pyright.setup({})
+			-- lspconfig.pyright.setup({})
+			lspconfig.basedpyright.setup({
+				settings = {
+					basedpyright = {
+						analysis = {
+							autoSearchPaths = true,
+							useLibraryCodeForTypes = true,
+							typeCheckingMode = "basic",
+							inlayHints = {
+								variableTypes = true,
+								functionReturnTypes = true,
+								parameterNames = true,
+							},
+						},
+					},
+				},
+			})
 			lspconfig.ruff.setup({})
 
 			-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ --
@@ -286,7 +299,7 @@ return {
 			lspconfig.graphql.setup({
 				filetypes = { "graphql", "gql", "typescriptreact", "javascriptreact" },
 			})
-			
+
 			-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ --
 			-- ➤ Svelte - Svelte framework support               --
 			-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ --
@@ -353,28 +366,27 @@ return {
 			-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ --
 			lspconfig.rust_analyzer.setup({})
 
-			
 			-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ --
 			-- ➤ Tailwind CSS - Utility-first CSS framework      --
 			-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ --
 			lspconfig.tailwindcss.setup({
 				settings = {
 					tailwindCSS = {
-						classAttributes = { 'class', 'className', 'class:list', 'classList', 'ngClass' },
+						classAttributes = { "class", "className", "class:list", "classList", "ngClass" },
 						includeLanguages = {
-							eelixir = 'html-eex',
-							eruby = 'erb',
-							htmlangular = 'html',
-							templ = 'html',
+							eelixir = "html-eex",
+							eruby = "erb",
+							htmlangular = "html",
+							templ = "html",
 						},
 						lint = {
-							cssConflict = 'warning',
-							invalidApply = 'error',
-							invalidConfigPath = 'error',
-							invalidScreen = 'error',
-							invalidTailwindDirective = 'error',
-							invalidVariant = 'error',
-							recommendedVariantOrder = 'warning',
+							cssConflict = "warning",
+							invalidApply = "error",
+							invalidConfigPath = "error",
+							invalidScreen = "error",
+							invalidTailwindDirective = "error",
+							invalidVariant = "error",
+							recommendedVariantOrder = "warning",
 						},
 						validate = true,
 					},

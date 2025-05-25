@@ -39,14 +39,6 @@ return {
 			},
 		})
 
-		vim.keymap.set({ "n", "v" }, "<leader>mp", function()
-			conform.format({
-				lsp_fallback = true,
-				async = false,
-				timeout_ms = 1000,
-			})
-		end, { desc = "Format file or range (in visual mode)" })
-
 		-- Format entire project
 		vim.api.nvim_create_user_command("FormatDirectory", function()
 			local scan = require("plenary.scandir")
@@ -80,7 +72,15 @@ return {
 			end)
 		end, { desc = "Format all files in the current directory using conform" })
 
+		vim.keymap.set({ "n", "v" }, "<leader>lp", function()
+			conform.format({
+				lsp_fallback = true,
+				async = false,
+				timeout_ms = 1000,
+			})
+		end, { desc = "Format file or range (in visual mode)" })
+
 		-- Keymap to format entire project
-		vim.keymap.set("n", "<leader>mP", "<cmd>FormatDirectory<CR>", { desc = "Format entire project" })
+		vim.keymap.set("n", "<leader>lP", "<cmd>FormatDirectory<CR>", { desc = "Format entire project" })
 	end,
 }

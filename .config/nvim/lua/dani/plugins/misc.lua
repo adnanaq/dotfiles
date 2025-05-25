@@ -22,7 +22,7 @@ return {
 
 	-- Ui Select
 	{
-		'nvim-telescope/telescope-ui-select.nvim'
+		"nvim-telescope/telescope-ui-select.nvim",
 	},
 
 	-- Codium
@@ -56,6 +56,13 @@ return {
 			--   If not available, we use `mini` as the fallback
 			"rcarriga/nvim-notify",
 		},
+		config = function()
+			require("noice").setup({
+				notify = {
+					enabled = false,
+				},
+			})
+		end,
 	},
 
 	-- Todo Commentsc
@@ -182,6 +189,10 @@ return {
 	-- Fzf Native
 	{
 		"nvim-telescope/telescope-fzf-native.nvim",
-		build = "make"
+		build = "make",
 	},
+
+	-- {
+	-- 	"nvim-telescope/telescope-live-grep-args.nvim",
+	-- },
 }
