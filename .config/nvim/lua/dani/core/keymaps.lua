@@ -17,10 +17,6 @@ keymap.set("n", "<leader>nh", ":nohl<CR>", { desc = "Clear search highlights" })
 keymap.set("n", "n", "nzzzv", { desc = "Find next and center" }) -- find next and center cursor
 keymap.set("n", "N", "Nzzzv", { desc = "Find previous and center" }) -- find previous and center cursor
 
--- increment/decrement numbers
-keymap.set("n", "<leader>+", "<C-a>", { desc = "Increment number" }) -- increment
-keymap.set("n", "<leader>-", "<C-x>", { desc = "Decrement number" }) -- decrement
-
 -- Resize with arrows
 keymap.set("n", "<Up>", ":resize -2<CR>", { desc = "Resize window height top" }) -- Resize window height top
 keymap.set("n", "<Down>", ":resize +2<CR>", { desc = "Resize window height bottom" }) -- Resize window height bottom
@@ -48,16 +44,6 @@ wk.add({
 keymap.set("n", "<leader>bx", ":bdelete!<CR>", { desc = "Close current buffer" }) -- close current buffer
 keymap.set("n", "<leader>bb", "<cmd> enew <CR>", { desc = "Open new buffer" }) -- open new buffer
 
--- -- Tabs
--- wk.add({
--- 	{ "<leader>T", group = "Tabs" },
--- 	{ "<leader>To", ":tabnew<CR>", desc = "Open new tab", mode = "n" }, -- open new tab
--- 	{ "<leader>Tx", ":tabclose<CR>", desc = "Close current tab", mode = "n" }, -- close current tab
--- 	{ "<leader>Tn", ":tabn<CR>", desc = "Go to next tab", mode = "n" }, --  go to next tab
--- 	{ "<leader>Tp", ":tabp<cr>", desc = "go to previous tab", mode = "n" }, --  go to previous tab
--- 	{ "<leader>Tf", ":tabnew %<cr>", desc = "open current buffer in new tab", mode = "n" }, --  move current buffer to new tab})
--- })
---
 keymap.set("n", "<Tab>", ":bnext<CR>", { desc = "Go to next buffer" }) --  go to next buffer
 keymap.set("n", "<S-Tab>", ":bprevious<CR>", { desc = "Go to previous buffer" }) --  go to previous buffer
 

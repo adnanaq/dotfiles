@@ -274,7 +274,6 @@ return {
 			-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ --
 			-- ➤ Python - Python language support                --
 			-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ --
-			-- lspconfig.pyright.setup({})
 			lspconfig.basedpyright.setup({
 				settings = {
 					basedpyright = {
