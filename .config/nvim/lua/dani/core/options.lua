@@ -25,7 +25,6 @@ vim.o.cursorline = false -- Highlight the current line (default: false)
 -- turn on termguicolors for tokyonight colorscheme to work
 -- (have to use iterm2 or any other true color terminal)
 opt.termguicolors = true
-opt.background = "dark" -- colorschemes that can be light or dark will be made dark
 opt.signcolumn = "yes" -- show sign column so that text doesn't shift
 
 -- backspace
@@ -43,3 +42,6 @@ vim.o.swapfile = false -- Creates a swapfile (default: true)
 
 -- mouse support
 opt.mouse = "a" -- enable mouse support
+
+-- global statusline
+vim.o.laststatus = 3

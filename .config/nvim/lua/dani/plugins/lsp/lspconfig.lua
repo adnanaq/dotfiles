@@ -56,7 +56,7 @@ return {
 			})
 		end
 
-		local function setup_document_highlight(event, client)
+		local function setup_document_highlight(event, _)
 			local highlight_augroup = vim.api.nvim_create_augroup("UserLspHighlight", { clear = false })
 
 			vim.api.nvim_create_autocmd({ "CursorHold", "CursorHoldI" }, {
@@ -83,18 +83,17 @@ return {
 		local function setup_lsp_attach_autocmd()
 			vim.api.nvim_create_autocmd("LspAttach", {
 				group = vim.api.nvim_create_augroup("UserLspConfig", {}),
-				callback = function(event)
+				callback = function(e)
 					local map = function(keys, func, desc, mode)
 						mode = mode or "n"
 						if type(mode) == "table" then
 							for _, m in ipairs(mode) do
-								vim.keymap.set(m, keys, func, { buffer = event.buf, desc = "LSP: " .. desc })
+								vim.keymap.set(m, keys, func, { buffer = e.buf, desc = "LSP: " .. desc })
 							end
 						else
-							vim.keymap.set(mode, keys, func, { buffer = event.buf, desc = "LSP: " .. desc })
+							vim.keymap.set(mode, keys, func, { buffer = 0, desc = "LSP: " .. desc })
 						end
 					end
-
 					-- Documentation
 					map("K", vim.lsp.buf.hover, "Show documentation in hover")
 
@@ -123,17 +122,17 @@ return {
 					end, "Workspace Symbol")
 
 					-- Get client
-					local client = vim.lsp.get_client_by_id(event.data.client_id)
+					local client = vim.lsp.get_client_by_id(e.data.client_id)
 
 					-- Setup document highlighting
 					if client and client:supports_method(vim.lsp.protocol.Methods.textDocument_documentHighlight) then
-						setup_document_highlight(event, client)
+						setup_document_highlight(e, client)
 					end
 
 					-- Toggle Inlay Hints
 					if client and client:supports_method(vim.lsp.protocol.Methods.textDocument_inlayHint) then
 						map("<leader>ih", function()
-							vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled({ bufnr = event.buf }))
+							vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled({ bufnr = e.buf }))
 						end, "Toggle Inlay Hints")
 					end
 				end,
@@ -156,6 +155,7 @@ return {
 			table.insert(runtime_path, "lua/?/init.lua")
 
 			lspconfig.lua_ls.setup({
+				capabilities = setup_capabilities(),
 				on_init = function(client)
 					local path = client.workspace_folders[1].name
 					if vim.loop.fs_stat(path .. "/.luarc.json") or vim.loop.fs_stat(path .. "/.luarc.jsonc") then
@@ -192,10 +192,12 @@ return {
 		end
 
 		local function setup_servers()
+			local capabilities = setup_capabilities()
 			-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ --
 			-- ➤ Golang - Go language support                    --
 			-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ --
 			lspconfig.gopls.setup({
+				capabilities = capabilities,
 				filetypes = { "go", "gomod", "gowork", "gotmpl" },
 				root_dir = lspconfig.util.root_pattern("go.mod", "go.work", ".git"),
 				settings = {
@@ -303,7 +305,7 @@ return {
 			-- ➤ Svelte - Svelte framework support               --
 			-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ --
 			lspconfig.svelte.setup({
-				on_attach = function(client, bufnr)
+				on_attach = function(client, _)
 					vim.api.nvim_create_autocmd("BufWritePost", {
 						pattern = { "*.js", "*.ts" },
 						callback = function(ctx)
@@ -400,10 +402,38 @@ return {
 			setup_keymaps()
 			setup_diagnostics()
 			setup_lsp_attach_autocmd()
-			setup_capabilities()
+			-- setup_capabilities()
 			setup_servers()
 		end
 
 		init()
+
+		vim.api.nvim_create_user_command("LspDebugClients", function()
+			local clients = vim.lsp.get_clients() -- Updated function
+			for _, client in pairs(clients) do
+				print("Client: " .. client.name)
+				if client.server_capabilities and client.server_capabilities.positionEncoding then
+					print("  Position encoding: " .. client.server_capabilities.positionEncoding)
+				else
+					print("  Position encoding: NOT SET")
+				end
+				if client.offset_encoding then
+					print("  Offset encoding: " .. client.offset_encoding)
+				end
+			end
+		end, {})
+
+		vim.api.nvim_create_user_command("LspCapabilities", function()
+			local clients = vim.lsp.get_clients({ bufnr = 0 })
+			for _, client in pairs(clients) do
+				print("=== Client: " .. client.name .. " ===")
+				print("Server capabilities:")
+				print(vim.inspect(client.server_capabilities))
+				print("\nClient offset encoding: " .. (client.offset_encoding or "nil"))
+				print("Resolved capabilities:")
+				print(vim.inspect(client.resolved_capabilities or "Not available"))
+				print("\n" .. string.rep("-", 50) .. "\n")
+			end
+		end, {})
 	end,
 }

@@ -62,6 +62,7 @@ return {
 		keymap.set("n", "<leader>fh", builtin.help_tags, { desc = "Find Help Tags" })
 		keymap.set("n", "<leader>ft", "<cmd>TodoTelescope<cr>", { desc = "Find todos" })
 		keymap.set("n", "<leader>fk", builtin.keymaps, { desc = "Find Keymaps" })
+		keymap.set("n", "<leader>fT", builtin.colorscheme, { desc = "Find Theme" })
 		-- keymap.set(
 		-- 	"n",
 		-- 	"<leader>fc",

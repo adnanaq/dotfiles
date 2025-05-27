@@ -184,7 +184,7 @@ return {
 				vim.cmd.colorscheme(theme.colorscheme)
 
 				-- Update lualine if available
-				local ok, lualine = pcall(require, "lualine")
+				local ok, _ = pcall(require, "lualine")
 				if ok then
 					require("lualine").setup({
 						options = {
@@ -248,70 +248,6 @@ return {
 			vim.api.nvim_create_user_command("ThemeNext", ToggleTheme, { desc = "Switch to next theme" })
 			vim.api.nvim_create_user_command("ThemePrev", ToggleThemePrev, { desc = "Switch to previous theme" })
 			vim.api.nvim_create_user_command("ThemeList", ListThemes, { desc = "List all available themes" })
-			vim.api.nvim_create_user_command("ThemeSelect", function(opts)
-				SelectTheme(opts.args)
-			end, {
-				desc = "Select theme by name",
-				nargs = 1,
-				complete = function()
-					local theme_names = {}
-					for _, theme in ipairs(themes) do
-						table.insert(theme_names, theme.name)
-					end
-					return theme_names
-				end,
-			})
-
-			-- Optional: Create a telescope picker if telescope is available
-			local telescope_ok, telescope = pcall(require, "telescope")
-			if telescope_ok then
-				local pickers = require("telescope.pickers")
-				local finders = require("telescope.finders")
-				local conf = require("telescope.config").values
-				local actions = require("telescope.actions")
-				local action_state = require("telescope.actions.state")
-
-				function TelescopeThemePicker()
-					pickers
-						.new({}, {
-							prompt_title = "Select Theme",
-							finder = finders.new_table({
-								results = themes,
-								entry_maker = function(entry)
-									return {
-										value = entry,
-										display = entry.name,
-										ordinal = entry.name,
-									}
-								end,
-							}),
-							sorter = conf.generic_sorter({}),
-							attach_mappings = function(prompt_bufnr, map)
-								actions.select_default:replace(function()
-									actions.close(prompt_bufnr)
-									local selection = action_state.get_selected_entry()
-									for i, theme in ipairs(themes) do
-										if theme.name == selection.value.name then
-											current_theme_index = i
-											apply_theme(theme)
-											save_theme(current_theme_index)
-											break
-										end
-									end
-								end)
-								return true
-							end,
-						})
-						:find()
-				end
-
-				vim.keymap.set("n", "<leader>fp", TelescopeThemePicker, { desc = "Open theme picker" })
-				vim.api.nvim_create_user_command(
-					"ThemePicker",
-					TelescopeThemePicker,
-					{ desc = "Open telescope theme picker" }
-				)
-			end
 		end,
 	},
 }
