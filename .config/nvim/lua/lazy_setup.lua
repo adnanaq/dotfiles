@@ -19,7 +19,7 @@ vim.ui.open = function(path)
 	os.execute('explorer.exe "' .. escaped .. '"')
 end
 
-require("lazy").setup({ { import = "dani.plugins" }, { import = "dani.plugins.lsp" } }, {
+require("lazy").setup({ { import = "plugins" } }, {
 	checker = {
 		enabled = true,
 		notify = false,

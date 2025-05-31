@@ -72,52 +72,48 @@ return {
 
 					keymaps = {
 						-- You can use the capture groups defined in textobjects.scm
-						["a="] = { query = "@assignment.outer", desc = "Select outer part of an assignment" },
-						["i="] = { query = "@assignment.inner", desc = "Select inner part of an assignment" },
-						["l="] = { query = "@assignment.lhs", desc = "Select left hand side of an assignment" },
-						["r="] = { query = "@assignment.rhs", desc = "Select right hand side of an assignment" },
+						["a="] = { query = "@assignment.outer", desc = "Outer Assignment" },
+						["i="] = { query = "@assignment.inner", desc = "Inner Assignment" },
+						["l="] = { query = "@assignment.lhs", desc = "Left Assignment" },
+						["r="] = { query = "@assignment.rhs", desc = "Right Assignment" },
 
-						["a:"] = { query = "@property.outer", desc = "Select outer part of an object property" },
-						["i:"] = { query = "@property.inner", desc = "Select inner part of an object property" },
-						["l:"] = { query = "@property.lhs", desc = "Select left part of an object property" },
-						["r:"] = { query = "@property.rhs", desc = "Select right part of an object property" },
+						["a:"] = { query = "@property.outer", desc = "Outer Object Property" },
+						["i:"] = { query = "@property.inner", desc = "Inner object property" },
+						["l:"] = { query = "@property.lhs", desc = "Left Object Property" },
+						["r:"] = { query = "@property.rhs", desc = "Right Object Property" },
 
-						["aa"] = { query = "@parameter.outer", desc = "Select outer part of a parameter/argument" },
-						["ia"] = { query = "@parameter.inner", desc = "Select inner part of a parameter/argument" },
+						["aa"] = { query = "@parameter.outer", desc = "Outer Parameter/Argument" },
+						["ia"] = { query = "@parameter.inner", desc = "Inner parameter/argument" },
 
-						["ai"] = { query = "@conditional.outer", desc = "Select outer part of a conditional" },
-						["ii"] = { query = "@conditional.inner", desc = "Select inner part of a conditional" },
+						["ai"] = { query = "@conditional.outer", desc = "Outer Conditional" },
+						["ii"] = { query = "@conditional.inner", desc = "Inner conditional" },
 
 						["al"] = { query = "@loop.outer", desc = "Select outer part of a loop" },
 						["il"] = { query = "@loop.inner", desc = "Select inner part of a loop" },
 
-						["af"] = {
-							query = "@function.outer",
-							desc = "Select outer part of a method/function definition",
-						},
-						["if"] = {
-							query = "@function.inner",
-							desc = "Select inner part of a method/function definition",
-						},
+						["af"] = { query = "@function.outer", desc = "Outer Function" },
+						["if"] = { query = "@function.inner", desc = "Inner Function" },
 
-						["am"] = { query = "@call.outer", desc = "Select outer part of a function call" },
-						["im"] = { query = "@call.inner", desc = "Select inner part of a function call" },
+						["am"] = { query = "@call.outer", desc = "Outer Method" },
+						["im"] = { query = "@call.inner", desc = "Inner Method" },
 
-						["ac"] = { query = "@class.outer", desc = "Select outer part of a class" },
-						["ic"] = { query = "@class.inner", desc = "Select inner part of a class" },
+						["ac"] = { query = "@class.outer", desc = "Outer Class" },
+						["ic"] = { query = "@class.inner", desc = "Inner Class" },
+
+						["at"] = { query = "@comment.outer", desc = "Outer Comment" },
 					},
 				},
 				swap = {
 					enable = true,
 					swap_next = {
-						["<leader>na"] = "@parameter.inner", -- swap parameters/argument with next
-						["<leader>n:"] = "@property.outer", -- swap object property with next
-						["<leader>nm"] = "@function.outer", -- swap function with next
+						["<leader>na"] = { query = "@parameter.inner", desc = "Swap Paramter/Argument Next" },
+						["<leader>n:"] = { query = "@property.outer", desc = "Swap Property Next" },
+						["<leader>nm"] = { query = "@function.outer", desc = "Swap Function Next" },
 					},
 					swap_previous = {
-						["<leader>pa"] = "@parameter.inner", -- swap parameters/argument with prev
-						["<leader>p:"] = "@property.outer", -- swap object property with prev
-						["<leader>pm"] = "@function.outer", -- swap function with previous
+						["<leader>pa"] = { query = "@parameter.inner", desc = "Swap Paramter/Argument Previous" },
+						["<leader>p:"] = { query = "@property.outer", desc = "Swap Property Previous" },
+						["<leader>pm"] = { query = "@function.outer", desc = "Swap Funciton Previous" },
 					},
 				},
 				move = {

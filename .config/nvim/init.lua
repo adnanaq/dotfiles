@@ -1,2 +1,2 @@
-require("dani.lazy")
-require("dani.core")
+require("lazy_setup")
+require("core")

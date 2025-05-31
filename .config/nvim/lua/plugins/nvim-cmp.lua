@@ -18,13 +18,14 @@ return {
 	},
 	config = function()
 		local cmp = require("cmp")
-
 		local luasnip = require("luasnip")
-
 		local lspkind = require("lspkind")
 
-		-- loads vscode style snippets from installed plugins (e.g. friendly-snippets)
-		require("luasnip.loaders.from_vscode").lazy_load()
+		local has_words_before = function()
+			local line, col = unpack(vim.api.nvim_win_get_cursor(0))
+			return col ~= 0 and vim.api.nvim_buf_get_lines(0, line - 1, line, true)[1]:sub(col, col):match("%s") == nil
+		end
+
 		vim.api.nvim_set_hl(0, "NormalFloat", { bg = "#1e1e2e" })
 		vim.api.nvim_set_hl(0, "FloatBorder", { fg = "#89b4fa", bg = "#1e1e2e" })
 
@@ -45,7 +46,29 @@ return {
 				["<C-Space>"] = cmp.mapping.complete(), -- show completion suggestions
 				["<C-e>"] = cmp.mapping.abort(), -- close completion window
 				["<CR>"] = cmp.mapping.confirm({ select = false }),
+				-- ["<Tab>"] = cmp.mapping(function(fallback)
+				-- 	if cmp.visible() then
+				-- 		cmp.select_next_item()
+				-- 	elseif luasnip.expand_or_jumpable() then
+				-- 		luasnip.expand_or_jump()
+				-- 	elseif has_words_before() then
+				-- 		cmp.complete()
+				-- 	else
+				-- 		fallback()
+				-- 	end
+				-- end, { "i", "s" }),
+				--
+				-- ["<S-Tab>"] = cmp.mapping(function(fallback)
+				-- 	if cmp.visible() then
+				-- 		cmp.select_prev_item()
+				-- 	elseif luasnip.jumpable(-1) then
+				-- 		luasnip.jump(-1)
+				-- 	else
+				-- 		fallback()
+				-- 	end
+				-- end, { "i", "s" }),
 			}),
+
 			-- sources for autocompletion
 			sources = cmp.config.sources({
 				{ name = "nvim_lsp" },
@@ -57,8 +80,15 @@ return {
 			-- configure lspkind for vs-code like pictograms in completion menu
 			formatting = {
 				format = lspkind.cmp_format({
+					-- show_labelDetails = true,
 					maxwidth = 50,
 					ellipsis_char = "...",
+					menu = {
+						buffer = "", -- file-text icon
+						nvim_lsp = "󰒋", -- lambda/LSP icon
+						path = "", -- folder/file icon
+						luasnip = "󰘧", -- snippet icon,
+					},
 				}),
 			},
 			window = {
@@ -70,6 +100,17 @@ return {
 					winhighlight = "Normal:NormalFloat,FloatBorder:FloatBorder",
 					border = "shadow", -- Options: 'single', 'double', 'rounded', 'solid', 'shadow'
 				},
+			},
+			experimental = {
+				ghost_text = true,
+			},
+		})
+
+		-- Setup up vim-dadbod
+		cmp.setup.filetype({ "sql" }, {
+			sources = {
+				{ name = "vim-dadbod-completion" },
+				{ name = "buffer" },
 			},
 		})
 	end,

@@ -155,7 +155,6 @@ return {
 			table.insert(runtime_path, "lua/?/init.lua")
 
 			lspconfig.lua_ls.setup({
-				capabilities = setup_capabilities(),
 				on_init = function(client)
 					local path = client.workspace_folders[1].name
 					if vim.loop.fs_stat(path .. "/.luarc.json") or vim.loop.fs_stat(path .. "/.luarc.jsonc") then
@@ -192,12 +191,10 @@ return {
 		end
 
 		local function setup_servers()
-			local capabilities = setup_capabilities()
 			-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ --
 			-- ➤ Golang - Go language support                    --
 			-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ --
 			lspconfig.gopls.setup({
-				capabilities = capabilities,
 				filetypes = { "go", "gomod", "gowork", "gotmpl" },
 				root_dir = lspconfig.util.root_pattern("go.mod", "go.work", ".git"),
 				settings = {
@@ -298,7 +295,23 @@ return {
 			-- ➤ GraphQL - GraphQL schema and operations         --
 			-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ --
 			lspconfig.graphql.setup({
+				cmd = { "graphql-lsp", "server", "-m", "stream" },
 				filetypes = { "graphql", "gql", "typescriptreact", "javascriptreact" },
+				root_dir = lspconfig.util.root_pattern(
+					".graphqlrc*",
+					"graphql.config.*",
+					".graphql.config.*",
+					"package.json",
+					".git"
+				),
+				settings = {
+					graphql = {
+						validate = true,
+						introspection = true,
+					},
+				},
+				-- Ensure it starts even without config files in some cases
+				single_file_support = true,
 			})
 
 			-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ --
@@ -402,7 +415,7 @@ return {
 			setup_keymaps()
 			setup_diagnostics()
 			setup_lsp_attach_autocmd()
-			-- setup_capabilities()
+			setup_capabilities()
 			setup_servers()
 		end
 

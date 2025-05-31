@@ -24,7 +24,7 @@ return {
 		lazy = false,
 		config = function()
 			require("onedark").setup({
-				style = "darker",
+				style = "warmer",
 				code_style = {
 					comments = "italic",
 					keywords = "italic",
@@ -94,6 +94,14 @@ return {
 			})
 		end,
 	},
+	{
+		"rose-pine/neovim",
+		name = "rose-pine",
+	},
+
+	{ "Shatur/neovim-ayu" },
+
+	{ "rebelot/kanagawa.nvim" },
 
 	-- Theme Manager Configuration
 	{
@@ -106,42 +114,102 @@ return {
 				{
 					name = "TokyoNight Night",
 					colorscheme = "tokyonight-night",
+					lualinescheme = "tokyonight-night",
 				},
 				{
 					name = "TokyoNight Storm",
 					colorscheme = "tokyonight-storm",
+					lualinescheme = "tokyonight-storm",
 				},
 				{
 					name = "TokyoNight Day",
 					colorscheme = "tokyonight-day",
+					lualinescheme = "tokyonight-day",
 				},
 				{
 					name = "TokyoNight Moon",
 					colorscheme = "tokyonight-moon",
+					lualinescheme = "tokyonight-moon",
 				},
 				{
 					name = "OneDark",
 					colorscheme = "onedark",
+					lualinescheme = "onedark",
 				},
 				{
 					name = "Oceanic Next",
 					colorscheme = "OceanicNext",
+					lualinescheme = "OceanicNext",
 				},
 				{
 					name = "Catppuccin Latte",
 					colorscheme = "catppuccin-latte",
+					lualinescheme = "catppuccin-latte",
 				},
 				{
 					name = "Catppuccin Frappe",
 					colorscheme = "catppuccin-frappe",
+					lualinescheme = "catppuccin-frappe",
 				},
 				{
 					name = "Catppuccin Macchiato",
 					colorscheme = "catppuccin-macchiato",
+					lualinescheme = "catppuccin-macchiato",
 				},
 				{
 					name = "Catppuccin Mocha",
 					colorscheme = "catppuccin-mocha",
+					lualinescheme = "catppuccin-mocha",
+				},
+				{
+					name = "Rose Pine",
+					colorscheme = "rose-pine",
+					lualinescheme = "rose-pine",
+				},
+				{
+					name = "Rose Pine Main",
+					colorscheme = "rose-pine-main",
+					lualinescheme = "rose-pine",
+				},
+				{
+					name = "Rose Pine Moon",
+					colorscheme = "rose-pine-moon",
+					lualinescheme = "rose-pine",
+				},
+				{
+					name = "Rose Pine Moon",
+					colorscheme = "rose-pine-dawn",
+					lualinescheme = "rose-pine",
+				},
+				{
+					name = "Ayu Dark",
+					colorscheme = "ayu-dark",
+					lualinescheme = "ayu",
+				},
+				{
+					name = "Ayu Light",
+					colorscheme = "ayu-light",
+					lualinescheme = "ayu",
+				},
+				{
+					name = "Ayu Mirage",
+					colorscheme = "ayu-mirage",
+					lualinescheme = "ayu",
+				},
+				{
+					name = "Kanagawa Wave",
+					colorscheme = "kanagawa-wave",
+					lualinescheme = "kanagawa",
+				},
+				{
+					name = "Kanagawa Dragon",
+					colorscheme = "kanagawa-dragon",
+					lualinescheme = "kanagawa",
+				},
+				{
+					name = "Kanagawa Lotus",
+					colorscheme = "kanagawa-lotus",
+					lualinescheme = "kanagawa",
 				},
 			}
 
@@ -188,7 +256,7 @@ return {
 				if ok then
 					require("lualine").setup({
 						options = {
-							theme = theme.colorscheme,
+							theme = theme.lualinescheme,
 						},
 					})
 				end

@@ -55,12 +55,36 @@ return {
 		end
 
 		local function GitDiff()
-			local changes = vim.fn.GitGutterGetHunkSummary() or {}
-			return {
-				added = changes[1] or 0,
-				modified = changes[2] or 0,
-				removed = changes[3] or 0,
-			}
+			local dict = vim.b.gitsigns_status_dict
+			if not dict then
+				return ""
+			end
+
+			-- Utility to get fg color only
+			local function hex(hl_name, fallback)
+				local ok, hl = pcall(vim.api.nvim_get_hl, 0, { name = hl_name, link = false })
+				return ok and string.format("#%06x", hl.fg or fallback) or string.format("#%06x", fallback)
+			end
+
+			-- Only set foreground color and bold (no bg)
+			vim.api.nvim_set_hl(0, "GitDiffAddHl", { fg = hex("Added", 0x00ff00), bold = true })
+			vim.api.nvim_set_hl(0, "GitDiffChangeHl", { fg = hex("Changed", 0xffff00), bold = true })
+			vim.api.nvim_set_hl(0, "GitDiffDeleteHl", { fg = hex("Removed", 0xff0000), bold = true })
+
+			local parts = {}
+			if dict.added and dict.added > 0 then
+				table.insert(parts, " " .. dict.added)
+			end
+			if dict.changed and dict.changed > 0 then
+				table.insert(parts, " " .. dict.changed)
+			end
+			if dict.removed and dict.removed > 0 then
+				table.insert(parts, " " .. dict.removed)
+			end
+
+			table.insert(parts, "") -- reset highlight
+
+			return table.concat(parts, " ")
 		end
 
 		local function LspStatus()
@@ -156,7 +180,7 @@ return {
 						GitStatus,
 						cond = GitStatusCondition,
 						color = GitStatusColor,
-						padding = { left = 0, right = 1 },
+						padding = { left = 1, right = 1 },
 					},
 				},
 				lualine_c = {
@@ -173,7 +197,7 @@ return {
 					{
 						"diff",
 						-- cond = GitDiffCondition,
-						-- source = GitDiff,
+						-- GitDiff,
 						padding = 1,
 					},
 					LspStatus,
@@ -406,5 +430,24 @@ return {
 				end)
 			end,
 		})
+
+		vim.api.nvim_create_user_command("GitSignsDebug", function()
+			local status = vim.b.gitsigns_status or "No status"
+			local dict = vim.b.gitsigns_status_dict
+
+			print("Gitsigns Status:", status)
+
+			if dict then
+				print("Head:", dict.head or "N/A")
+				print("Added: ", dict.added or 0)
+				print("Changed: ", dict.changed or 0)
+				print("Removed: ", dict.removed or 0)
+				print("Git Root:", dict.root or "N/A")
+				print("Git cache:", git_branch_cache or "N/A")
+				print("Git status:", vim.inspect(git_status_cache) or "N/A")
+			else
+				print("gitsigns_status_dict not available")
+			end
+		end, {})
 	end,
 }
