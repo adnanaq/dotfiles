@@ -48,7 +48,7 @@ keymap.set("n", "<Tab>", ":bnext<CR>", { desc = "Go to next buffer" }) --  go to
 keymap.set("n", "<S-Tab>", ":bprevious<CR>", { desc = "Go to previous buffer" }) --  go to previous buffer
 
 -- Toggle line wrapping
-keymap.set("n", "<leader>lw", "<cmd>set wrap!<CR>", { desc = "Wrap line" }) --  Wrap line
+keymap.set({ "n", "v" }, "<leader>lw", "<cmd>set wrap!<CR>", { desc = "Wrap line" }) --  Wrap line
 
 -- Stay in indent mode
 keymap.set("v", "<", "<gv", { desc = "Indent left and keep selection" }) -- Indent left and keep selection
@@ -272,3 +272,8 @@ wk.add({
 	{ "<leader>xl", "<cmd>Trouble loclist toggle<CR>", desc = "Open trouble location list", mode = "n" }, -- open trouble location list
 	{ "<leader>xt", "<cmd>Trouble todo toggle<CR>", desc = "Open todos in trouble", mode = "n" }, -- open todos in trouble
 })
+
+-- Diagnostics
+keymap.set("n", "[d", vim.diagnostic.goto_prev, { silent = true, desc = "Go to previous diagnostic" }) -- Go to previous diagnostic
+keymap.set("n", "]d", vim.diagnostic.goto_next, { silent = true, desc = "Go to next diagnostic" }) -- Go to next diagnostic
+keymap.set("n", "<leader>dd", vim.diagnostic.open_float, { silent = true, desc = "Show line diagnostics" }) -- Show line diagnostics
