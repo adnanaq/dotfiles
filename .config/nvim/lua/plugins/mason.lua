@@ -27,16 +27,21 @@ return {
 		-- mason_lspconfig.setup({
 		-- 	-- list of servers for mason to install
 		-- 	ensure_installed = {
-		-- 		"ts_ls",
+		-- 		"basedpyright,
+		-- 		"bash-language-server",
+		-- 		"dockerfile-language-server",
+		-- 		"docker-compose-language-service",
+		-- 		"emmet_language_server",
+		-- 		"gopls",
+		-- 		"graphql-language-service-cli",
 		-- 		"html",
-		-- 		"cssls",
-		-- 		"tailwindcss",
-		-- 		"lua_ls",
-		-- 		"graphql",
-		-- 		"emmet_ls",
-		-- 		"prismals",
-		-- 		"pyright",
+		-- 		"jdtls",
+		-- 		"lua-language-server",
 		-- 		"omnisharp"
+		-- 		"tailwindcss-language-server",
+		-- 		"ts_ls",
+		-- 		"vtsls",
+		-- 		"yamlls",
 		-- 	},
 		-- })
 
