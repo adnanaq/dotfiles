@@ -11,7 +11,6 @@ return {
 			experimentalPostfixCompletions = true,
 			directoryFilters = { "-.git", "-.vscode", "-.idea", "-.vscode-test", "-node_modules" },
 			analyses = {
-				fieldalignment = true,
 				nilness = true,
 				unusedparams = true,
 				unusedwrite = true,
