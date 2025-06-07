@@ -5,18 +5,21 @@ A modern, productivity-focused development environment configuration optimized f
 ## 🚀 Features
 
 ### Shell Configuration
+
 - **Zsh** with optimized startup time and performance monitoring
 - **Bash** configuration as fallback
 - **Starship** prompt with Gruvbox Dark theme
 - Enhanced history management and smart completions
 
 ### Development Environment
+
 - **Neovim** - Highly customized with modern plugins and AI assistance
 - **Tmux** - Terminal multiplexer with session management and Tokyo Night theme
 - **Multiple Language Servers** - Go, Lua, Docker, GraphQL, TailwindCSS, Bash
 - **AI-Powered Coding** - Avante plugin with Anthropic API integration
 
 ### Productivity Tools
+
 - **fzf** - Fuzzy finder for files and command history
 - **zoxide** - Smart directory navigation
 - **eza** - Modern replacement for `ls` with icons
@@ -25,18 +28,21 @@ A modern, productivity-focused development environment configuration optimized f
 ## 📦 Included Tools & Languages
 
 ### Programming Languages & Runtimes
+
 - **Node.js** (with NVM)
 - **Go** programming language
 - **Python** (with Conda/Anaconda)
 - **Protocol Buffers** compiler
 
 ### Development Tools
+
 - **Docker** with context awareness
 - **Kafka** for stream processing
 - **Git** with enhanced status display
 - **Tmux** session persistence and restoration
 
 ### Shell Enhancements
+
 - **Zinit** - Fast Zsh plugin manager
 - **Zsh plugins**: syntax highlighting, autosuggestions, completions
 - **fzf-tab** - Enhanced tab completion with fzf
@@ -57,12 +63,14 @@ A modern, productivity-focused development environment configuration optimized f
 ## 🛠️ Installation
 
 1. **Clone the repository:**
+
    ```bash
    git clone <repository-url> ~/dotfiles
    cd ~/dotfiles
    ```
 
 2. **Backup existing configurations:**
+
    ```bash
    # Backup your existing dotfiles
    mv ~/.zshrc ~/.zshrc.backup
@@ -70,25 +78,31 @@ A modern, productivity-focused development environment configuration optimized f
    mv ~/.config ~/.config.backup
    ```
 
-3. **Create symbolic links:**
+3. **Install and use GNU Stow:**
+
    ```bash
-   # Shell configurations
-   ln -sf ~/dotfiles/.zshrc ~/.zshrc
-   ln -sf ~/dotfiles/.bashrc ~/.bashrc
-   
-   # Application configurations
-   ln -sf ~/dotfiles/.config ~/.config
+   # Install GNU Stow (if not already installed)
+   sudo apt install stow  # Ubuntu/Debian
+   # or
+   sudo dnf install stow  # Fedora
+   # or
+   brew install stow      # macOS
+
+   # Use stow to create symbolic links
+   cd ~/dotfiles
+   stow .
    ```
 
 4. **Install required tools:**
+
    ```bash
    # Install Starship prompt
    curl -sS https://starship.rs/install.sh | sh
-   
+
    # Install fzf
    git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
    ~/.fzf/install
-   
+
    # Install zoxide
    curl -sS https://raw.githubusercontent.com/ajeetdsouza/zoxide/main/install.sh | bash
    ```
@@ -113,18 +127,21 @@ A modern, productivity-focused development environment configuration optimized f
 ## 🔧 Key Configurations
 
 ### Zsh Features
+
 - **Startup time**: ~100ms optimized loading
 - **History**: 10,000 commands with smart deduplication
 - **Completions**: Case-insensitive with fuzzy matching
 - **Plugins**: Syntax highlighting, autosuggestions, fzf integration
 
 ### Neovim Features
+
 - **Plugin Manager**: Lazy.nvim for efficient plugin loading
 - **LSP**: Multiple language servers with auto-completion
 - **AI Assistance**: Avante plugin with Anthropic Claude integration
 - **Modern UI**: Enhanced with telescope, which-key, and more
 
 ### Tmux Features
+
 - **Prefix**: `Ctrl+a` (instead of default `Ctrl+b`)
 - **Vi Mode**: Vi-style key bindings for copy mode
 - **Session Management**: Persistent sessions with automatic restore
@@ -141,6 +158,7 @@ A modern, productivity-focused development environment configuration optimized f
 ## 🔑 Environment Variables
 
 Make sure to set up your API keys:
+
 ```bash
 export OPENAI_API_KEY="your-openai-key"
 export ANTHROPIC_API_KEY="your-anthropic-key"
@@ -149,6 +167,7 @@ export ANTHROPIC_API_KEY="your-anthropic-key"
 ## 📝 Customization
 
 Feel free to modify configurations to suit your needs:
+
 - Edit `.zshrc` for shell customizations
 - Modify `.config/starship.toml` for prompt appearance
 - Update `.config/nvim/` for editor preferences
@@ -157,6 +176,7 @@ Feel free to modify configurations to suit your needs:
 ## 🤝 Contributing
 
 This is a personal dotfiles repository, but feel free to:
+
 - Fork and adapt for your own use
 - Submit issues for bugs or suggestions
 - Share improvements via pull requests
@@ -167,4 +187,4 @@ This project is open source and available under the [MIT License](LICENSE).
 
 ---
 
-*Happy coding! 🚀*
+_Happy coding! 🚀_
