@@ -7,6 +7,7 @@ vim.lsp.enable({
 	"gopls",
 	"graphql-language-service-cli",
 	"html",
+	"kotlin_lsp",
 	"lua-language-server",
 	"tailwindcss-language-server",
 	"ts_ls",

@@ -1,0 +1,75 @@
+return {
+	-- "Vigemus/iron.nvim",
+	-- event = { "BufReadPre", "BufNewFile" },
+	-- config = function()
+	-- 	local iron = require("iron.core")
+	-- 	-- local view = require("iron.view")
+	-- 	local ll = require("iron.lowlevel")
+	-- 	local common = require("iron.fts.common")
+	--
+	-- 	iron.setup({
+	-- 		config = {
+	-- 			scratch_repl = true,
+	-- 			repl_definition = {
+	-- 				sh = {
+	-- 					command = { "zsh" },
+	-- 				},
+	--
+	-- 				lua = {
+	-- 					command = { "lua" },
+	-- 					block_dividers = { "-- %%", "--%%" },
+	-- 				},
+	--
+	-- 				python = {
+	-- 					command = { "ipython", "--no-autoindent" },
+	-- 					format = function(lines, extras)
+	-- 						local result = common.bracketed_paste_python(lines, extras) -- defacto is cell per Line (yes)
+	-- 						local filtered = vim.tbl_filter(function(line)
+	-- 							return not string.match(line, "^%s*#")
+	-- 						end, result)
+	-- 						return filtered
+	-- 					end,
+	-- 					block_dividers = { "# %%", "#%%" },
+	-- 				},
+	-- 			},
+	--
+	-- 			repl_filetype = function(_, ft)
+	-- 				return ft
+	-- 			end,
+	--
+	-- 			repl_open_cmd = "vertical split",
+	-- 		},
+	--
+	-- 		keymaps = {
+	-- 			toggle_repl = "<leader>ir", -- toggles the repl open and closed.
+	-- 			-- If repl_open_command is a table as above, then the following keymaps are
+	-- 			-- available
+	-- 			-- toggle_repl_with_cmd_1 = "<leader>rv",
+	-- 			-- toggle_repl_with_cmd_2 = "<leader>rh",
+	-- 			restart_repl = "<leader>iR",
+	-- 			send_motion = "<leader>ism",
+	-- 			visual_send = "<leader>isv",
+	-- 			send_file = "<leader>isf",
+	-- 			send_line = "<leader>isl",
+	-- 			send_paragraph = "<leader>isp",
+	-- 			send_until_cursor = "<leader>isu",
+	-- 			send_code_block = "<leader>isb",
+	-- 			send_code_block_and_move = "<leader>isn",
+	-- 			-- send_mark = "<leader>ism",
+	-- 			-- mark_motion = "<leader>imc",
+	-- 			-- mark_visual = "<leader>imc",
+	-- 			-- remove_mark = "<leader>imd",
+	-- 			cr = "<leader>is<cr>",
+	-- 			interrupt = "<leader>isi",
+	-- 			exit = "<leader>isq",
+	-- 			clear = "<leader>icc",
+	-- 		},
+	--
+	-- 		highlight = {
+	-- 			italic = true,
+	-- 		},
+	--
+	-- 		ignore_blank_lines = true, -- ignore blank lines when sending visual select lines
+	-- 	})
+	-- end,
+}

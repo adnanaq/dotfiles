@@ -4,18 +4,6 @@ return {
 		"folke/tokyonight.nvim",
 		lazy = false,
 		priority = 1000,
-		config = function()
-			local transparent = false -- set to true if you would like to enable transparency
-
-			require("tokyonight").setup({
-				style = "night",
-				transparent = transparent,
-				styles = {
-					sidebars = transparent and "transparent" or "dark",
-					floats = transparent and "transparent" or "dark",
-				},
-			})
-		end,
 	},
 
 	-- OneDark Theme
@@ -25,11 +13,6 @@ return {
 		config = function()
 			require("onedark").setup({
 				style = "warmer",
-				code_style = {
-					comments = "italic",
-					keywords = "italic",
-					functions = "bold",
-				},
 			})
 		end,
 	},
@@ -46,53 +29,6 @@ return {
 		name = "catppuccin",
 		lazy = false,
 		priority = 1000,
-		config = function()
-			require("catppuccin").setup({
-				flavour = "mocha", -- latte, frappe, macchiato, mocha
-				background = {
-					light = "latte",
-					dark = "mocha",
-				},
-				transparent_background = false,
-				show_end_of_buffer = false,
-				term_colors = false,
-				dim_inactive = {
-					enabled = false,
-					shade = "dark",
-					percentage = 0.15,
-				},
-				no_italic = false,
-				no_bold = false,
-				no_underline = false,
-				styles = {
-					comments = { "italic" },
-					conditionals = { "italic" },
-					loops = {},
-					functions = {},
-					keywords = {},
-					strings = {},
-					variables = {},
-					numbers = {},
-					booleans = {},
-					properties = {},
-					types = {},
-					operators = {},
-				},
-				color_overrides = {},
-				custom_highlights = {},
-				integrations = {
-					-- cmp = true,
-					gitsigns = true,
-					nvimtree = true,
-					treesitter = true,
-					notify = false,
-					mini = {
-						enabled = true,
-						indentscope_color = "",
-					},
-				},
-			})
-		end,
 	},
 	{
 		"rose-pine/neovim",
@@ -177,7 +113,7 @@ return {
 					lualinescheme = "rose-pine",
 				},
 				{
-					name = "Rose Pine Moon",
+					name = "Rose Pine Dawn",
 					colorscheme = "rose-pine-dawn",
 					lualinescheme = "rose-pine",
 				},
@@ -250,16 +186,6 @@ return {
 			local function apply_theme(theme)
 				-- Apply colorscheme
 				vim.cmd.colorscheme(theme.colorscheme)
-
-				-- Update lualine if available
-				local ok, _ = pcall(require, "lualine")
-				if ok then
-					require("lualine").setup({
-						options = {
-							theme = theme.lualinescheme,
-						},
-					})
-				end
 
 				-- Notify user
 				vim.notify("Applied theme: " .. theme.name, vim.log.levels.INFO)

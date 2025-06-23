@@ -165,6 +165,8 @@ return {
 		}
 		local config = {
 			options = {
+				globalstatus = true,
+				theme = "auto",
 				icons_enabled = true,
 				component_separators = angle_component_separators,
 				section_separators = angle_section_separators,

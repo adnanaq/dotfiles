@@ -36,6 +36,7 @@ return {
 		-- 		"graphql-language-service-cli",
 		-- 		"html",
 		-- 		"jdtls",
+		-- 		"kotlin_lsp",
 		-- 		"lua-language-server",
 		-- 		"omnisharp"
 		-- 		"tailwindcss-language-server",
@@ -47,18 +48,24 @@ return {
 
 		mason_tool_installer.setup({
 			ensure_installed = {
+				-- Linters
+				"eslint_d",
+				"golangci-lint",
+				-- Formatter and Linter
+				"ruff",
+				"ktlint",
+				-- Formatter
+				"black",
+				"google-java-format",
+				"gofumpt",
+				"goimports-reviser",
+				"gotests",
+				"isort",
 				"prettier",
 				"stylua",
-				"isort",
-				"black",
-				"ruff",
-				"eslint_d",
-				"gotests",
-				"gofumpt",
-				"golines",
-				"goimports-reviser",
-				"golangci-lint",
-				"google-java-format",
+				-- DAP
+				"delve",
+				"go-debug-adapter",
 				"java-debug-adapter",
 				"java-test",
 			},

@@ -9,7 +9,7 @@ return {
 				bash = { "beautysh" },
 				css = { "prettierd", "prettier", stop_after_first = true },
 				erb = { "htmlbeautifier" },
-				go = { "gofumpt" },
+				go = { "gofumpt", "goimports-reviser" },
 				graphql = { "prettierd", "prettier", stop_after_first = true },
 				html = { "htmlbeautifier", "prettier", stop_after_first = true },
 				java = { "google-java-format" },
@@ -42,9 +42,8 @@ return {
 		-- Format entire project
 		vim.api.nvim_create_user_command("FormatDirectory", function()
 			local scan = require("plenary.scandir")
-			local conform = require("conform")
-
 			local cwd = vim.fn.getcwd()
+
 			local files = scan.scan_dir(cwd, {
 				hidden = false,
 				add_dirs = false,
