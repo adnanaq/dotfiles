@@ -9,6 +9,7 @@ vim.lsp.enable({
 	"html",
 	"kotlin_lsp",
 	"lua-language-server",
+	"rust_analyzer",
 	"tailwindcss-language-server",
 	"ts_ls",
 	"vtsls",

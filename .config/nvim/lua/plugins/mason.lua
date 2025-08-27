@@ -39,6 +39,7 @@ return {
 		-- 		"kotlin_lsp",
 		-- 		"lua-language-server",
 		-- 		"omnisharp"
+		-- 		"rust_analyzer",
 		-- 		"tailwindcss-language-server",
 		-- 		"ts_ls",
 		-- 		"vtsls",
