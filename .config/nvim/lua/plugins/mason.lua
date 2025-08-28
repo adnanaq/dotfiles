@@ -24,28 +24,28 @@ return {
 			},
 		})
 
-		-- mason_lspconfig.setup({
-		-- 	-- list of servers for mason to install
-		-- 	ensure_installed = {
-		-- 		"basedpyright,
-		-- 		"bash-language-server",
-		-- 		"dockerfile-language-server",
-		-- 		"docker-compose-language-service",
-		-- 		"emmet_language_server",
-		-- 		"gopls",
-		-- 		"graphql-language-service-cli",
-		-- 		"html",
-		-- 		"jdtls",
-		-- 		"kotlin_lsp",
-		-- 		"lua-language-server",
-		-- 		"omnisharp"
-		-- 		"rust_analyzer",
-		-- 		"tailwindcss-language-server",
-		-- 		"ts_ls",
-		-- 		"vtsls",
-		-- 		"yamlls",
-		-- 	},
-		-- })
+		mason_lspconfig.setup({
+			-- list of servers for mason to install
+			ensure_installed = {
+				"basedpyright",
+				"bashls",
+				"dockerls",
+				"docker_compose_language_service",
+				"emmet_language_server",
+				"gopls",
+				"graphql",
+				--"html",
+				"jdtls",
+				"kotlin_lsp",
+				"lua_ls",
+				"omnisharp",
+				"rust_analyzer",
+				"tailwindcss",
+				-- "ts_ls",
+				"vtsls",
+				"yamlls",
+			},
+		})
 
 		mason_tool_installer.setup({
 			ensure_installed = {

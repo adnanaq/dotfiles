@@ -13,6 +13,7 @@ export PATH="$PATH:$HOME/kafka_2.13-4.0.0/bin" # Kafka
 export PATH="$HOME/.local/bin:$PATH" #Fdfind
 export PATH="$HOME/.cargo/bin:$PATH" #Rust
 export PATH=$PATH:/snap/bin #Kotlin
+FPATH="$HOME/.docker/completions:$FPATH"
 # 2. Fast-loading utility functions or static sources
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
