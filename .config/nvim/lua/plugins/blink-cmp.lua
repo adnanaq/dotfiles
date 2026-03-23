@@ -12,6 +12,7 @@ return {
 			cmdline = {
 				completion = {
 					ghost_text = { enabled = true },
+					menu = { auto_show = true },
 				},
 			},
 
@@ -21,21 +22,13 @@ return {
 
 				documentation = {
 					auto_show = false,
-					auto_show_delay_ms = 100,
+					-- auto_show_delay_ms = 100, -- No effect when auto_show = false
 					treesitter_highlighting = true,
 					window = { border = "rounded" },
 				},
 
 				menu = {
 					border = "rounded",
-					cmdline_position = function()
-						if vim.g.ui_cmdline_pos ~= nil then
-							local pos = vim.g.ui_cmdline_pos -- (1, 0)-indexed
-							return { pos[1] - 1, pos[2] }
-						end
-						local height = (vim.o.cmdheight == 0) and 1 or vim.o.cmdheight
-						return { vim.o.lines - height, 0 }
-					end,
 					draw = {
 						-- treesitter = { "lsp" },
 						columns = {
@@ -49,7 +42,11 @@ return {
 			},
 
 			fuzzy = { implementation = "prefer_rust_with_warning" },
-			-- signature = { enabled = true, window = { border = "rounded" } },
+			signature = {
+				enabled = true,
+				trigger = { show_on_accept = true },
+				window = { border = "rounded" },
+			},
 
 			snippets = { preset = "luasnip" },
 

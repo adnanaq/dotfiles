@@ -15,8 +15,7 @@ vim.opt.rtp:prepend(lazypath)
 vim.g.mapleader = " "
 
 vim.ui.open = function(path)
-	local escaped = path:gsub('"', '\\"')
-	os.execute('explorer.exe "' .. escaped .. '"')
+	vim.fn.jobstart({ "xdg-open", path }, { detach = true })
 end
 
 require("lazy").setup({ { import = "plugins" } }, {

@@ -1,5 +1,4 @@
 vim.lsp.enable({
-	"basedpyright",
 	"bashls",
 	"docker_compose_language_service",
 	"dockerls",
@@ -7,6 +6,7 @@ vim.lsp.enable({
 	"gopls",
 	"graphql",
 	"html",
+	"jsonls",
 	"kotlin_lsp",
 	"lua_ls",
 	"rust_analyzer",
@@ -14,6 +14,8 @@ vim.lsp.enable({
 	"ts_ls",
 	"vtsls",
 	"yamlls",
+	-- "ruff",
+	-- "ty",
 })
 
 vim.diagnostic.config({

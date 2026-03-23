@@ -21,7 +21,7 @@ return {
 				lua = { "stylua" },
 				markdown = { "prettierd", "prettier", stop_after_first = true },
 				proto = { "buf" },
-				python = { "isort", "black" },
+				python = { "ruff", "ty" },
 				ruby = { "standardrb" },
 				rust = { "rustfmt" },
 				scss = { "prettierd", "prettier", stop_after_first = true },

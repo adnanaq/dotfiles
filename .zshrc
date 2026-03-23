@@ -1,6 +1,6 @@
 # zmodload zsh/zprof
 
-start_time=$(date +%s%3N)
+# start_time=$(date +%s%3N)
 
 # 1. Environment variables and paths — keep these at the top (fast, no evals)
 export NVM_DIR="$HOME/.nvm"
@@ -9,11 +9,10 @@ export PATH="$PATH:$HOME/go/bin" # Go package documentation
 export CGO_ENABLED=1 # Enable cgo to allow Go's race detector to function properly
 export PATH="$PATH:$HOME/.local/bin" # Protocol Buffer Compiler
 export PATH="$PATH:/opt/nvim-linux-x86_64/bin" # Neovim path for global access
-export PATH="$PATH:$HOME/kafka_2.13-4.0.0/bin" # Kafka
 export PATH="$HOME/.local/bin:$PATH" #Fdfind
 export PATH="$HOME/.cargo/bin:$PATH" #Rust
-export PATH=$PATH:/snap/bin #Kotlin
 FPATH="$HOME/.docker/completions:$FPATH"
+set ENABLE_TOOL_SEARCH=true # Serena on-demand tool loading
 # 2. Fast-loading utility functions or static sources
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
@@ -94,15 +93,41 @@ zstyle ':completion:*' menu no
 zstyle ':fzf-tab:complete:cd:*' fzf-preview 'ls --color=always $realpath'
 
 # 11. Aliases
-# alias ls='ls --color'
-alias ls='eza --icons always'
-alias ll='eza -alh'
-alias li='eza -lhI "node_modules" --tree --icons always'
-alias tree='eza --tree --icons always'
+# ls → default listing (grid, icons, git-ignored files hidden)
+alias ls='eza --icons=always --git-ignore'
+
+# ll → long listing (details, icons, git-ignored files hidden)
+alias ll='eza -lh --icons=always --git-ignore'
+
+# la → long listing including all hidden files (dotfiles)
+alias la='eza -alh --icons=always'
+
+# lt → tree view for project (full tree, git-ignore applied)
+alias lt='eza --tree --icons=always --git-ignore'
+
+# li → “list important” / project clean tree
+# Shows tree for current folder, ignores common build dirs
+alias li='eza -lh --tree -I "node_modules|dist|build|target" --icons=always'
+
 alias cat='batcat'
 
-end_time=$(date +%s%3N)
-elapsed_time=$((end_time - start_time))
-echo "Zsh startup time: ${elapsed_time}ms"
+# alias codex='CODEX_HOME="$PWD/.codex" codex'
+
+codex() {
+  local CODEX_BIN="/usr/local/bin/codex"
+  local home
+
+  if [[ -d "$PWD/.codex" ]]; then
+    home="$PWD/.codex"
+  else
+    home="$HOME/.codex"
+  fi
+
+  CODEX_HOME="$home" "$CODEX_BIN" "$@"
+}
+
+# end_time=$(date +%s%3N)
+# elapsed_time=$((end_time - start_time))
+# echo "Zsh startup time: ${elapsed_time}ms"
 
 # zprof

@@ -4,7 +4,7 @@ return {
 	config = function()
 		local str = require("commons.str")
 		local tbl = require("commons.tbl")
-		local spawn = require("commons.spawn")
+		-- commons.spawn was removed - using vim.system instead
 		local lazy_status = require("lazy.status") -- to configure lazy pending updates count
 
 		local git_branch_cache = nil
@@ -15,7 +15,15 @@ return {
 		end
 
 		local function GitBranch()
-			local branch = " " .. git_branch_cache
+			if not git_branch_cache then
+				return ""
+			end
+			local MAX_BRANCH_LENGTH = 15
+			local branch_name = git_branch_cache
+			if string.len(branch_name) > MAX_BRANCH_LENGTH then
+				branch_name = string.sub(branch_name, 1, MAX_BRANCH_LENGTH) .. "..."
+			end
+			local branch = " " .. branch_name
 			if git_status_cache and git_status_cache["changed"] then
 				branch = branch .. "*"
 			end
@@ -264,7 +272,6 @@ return {
 					},
 				},
 				lualine_z = {
-					{ CursorHex, padding = 0 },
 					{ Location, padding = { left = 1, right = 0 } },
 					{ Progress, padding = { left = 1, right = 0 } },
 				},
@@ -367,42 +374,42 @@ return {
 
 			local cwd = get_buffer_dir()
 			local status_info = {}
-			local failed_get_status = false
-			spawn.detached({ "git", "-c", "color.status=never", "status", "-b", "--porcelain=v2" }, {
+
+			vim.system({ "git", "-c", "color.status=never", "status", "-b", "--porcelain=v2" }, {
 				cwd = cwd,
-				on_stdout = function(line)
-					if type(line) == "string" then
-						table.insert(status_info, line)
-					end
-				end,
-				on_stderr = function()
-					status_info = nil
-				end,
-			}, function(completed)
-				if
-					not failed_get_status
-					and tbl.tbl_get(completed, "exitcode") == 0
-					and tbl.list_not_empty(status_info)
-				then
-					local branch_status = parse_git_status(status_info) --[[@as table]]
-
-					-- branch name
-					if tbl.tbl_not_empty(branch_status) and str.not_empty(branch_status.branch) then
-						git_branch_cache = branch_status.branch --[[@as string]]
-					end
-
-					-- status info
-					if tbl.tbl_not_empty(branch_status) then
-						git_status_cache = branch_status
-					else
-						git_status_cache = nil
-					end
-				end
+				text = true,
+			}, function(result)
 				vim.schedule(function()
+					if result.code == 0 and result.stdout then
+						-- Split stdout into lines
+						for line in result.stdout:gmatch("[^\r\n]+") do
+							if type(line) == "string" and #line > 0 then
+								table.insert(status_info, line)
+							end
+						end
+
+						if tbl.list_not_empty(status_info) then
+							local branch_status = parse_git_status(status_info) --[[@as table]]
+
+							-- branch name
+							if tbl.tbl_not_empty(branch_status) and str.not_empty(branch_status.branch) then
+								git_branch_cache = branch_status.branch --[[@as string]]
+							end
+
+							-- status info
+							if tbl.tbl_not_empty(branch_status) then
+								git_status_cache = branch_status
+							else
+								git_status_cache = nil
+							end
+						end
+					end
+
 					vim.api.nvim_exec_autocmds("User", {
 						pattern = "LualineGitBranchUpdated",
 						modeline = false,
 					})
+
 					vim.schedule(function()
 						updating_git_branch = false
 					end)

@@ -277,3 +277,6 @@ wk.add({
 keymap.set("n", "[d", vim.diagnostic.goto_prev, { silent = true, desc = "Go to previous diagnostic" }) -- Go to previous diagnostic
 keymap.set("n", "]d", vim.diagnostic.goto_next, { silent = true, desc = "Go to next diagnostic" }) -- Go to next diagnostic
 keymap.set("n", "<leader>dd", vim.diagnostic.open_float, { silent = true, desc = "Show line diagnostics" }) -- Show line diagnostics
+
+-- Neovim Lua config
+vim.g.netrw_browsex_viewer = "xdg-open"
