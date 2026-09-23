@@ -1,462 +1,85 @@
 return {
 	"nvim-lualine/lualine.nvim",
-	dependencies = { "nvim-tree/nvim-web-devicons", "linrongbin16/commons.nvim" },
+	dependencies = { "nvim-tree/nvim-web-devicons" },
 	config = function()
-		local str = require("commons.str")
-		local tbl = require("commons.tbl")
-		-- commons.spawn was removed - using vim.system instead
-		local lazy_status = require("lazy.status") -- to configure lazy pending updates count
-
-		local git_branch_cache = nil
-		local git_status_cache = nil
-
-		local function GitBranchCondition()
-			return str.not_empty(git_branch_cache)
-		end
-
-		local function GitBranch()
-			if not git_branch_cache then
-				return ""
-			end
-			local MAX_BRANCH_LENGTH = 15
-			local branch_name = git_branch_cache
-			if string.len(branch_name) > MAX_BRANCH_LENGTH then
-				branch_name = string.sub(branch_name, 1, MAX_BRANCH_LENGTH) .. "..."
-			end
-			local branch = " " .. branch_name
-			if git_status_cache and git_status_cache["changed"] then
-				branch = branch .. "*"
-			end
-			return branch
-		end
-
-		local function GitStatusCondition()
-			return tbl.tbl_not_empty(git_status_cache)
-		end
-
-		local function GitStatus()
-			local status = ""
-			if git_status_cache and type(git_status_cache["ahead"]) == "number" then
-				status = status .. string.format(" ↑[%d]", git_status_cache["ahead"])
-			end
-			if git_status_cache and type(git_status_cache["behind"]) == "number" then
-				status = status .. string.format(" ↓[%d]", git_status_cache["behind"])
-			end
-
-			return str.trim(status)
-		end
-
-		local function GitStatusColor()
-			for i = 1, 3 do
-				local name = string.format("terminal_color_%d", i)
-				local color = vim.g[name]
-				if str.not_empty(color) then
-					return { fg = color }
-				end
-			end
-			local yellow = "#FFFF00"
-			return { fg = yellow }
-		end
-
-		local function GitDiffCondition()
-			return vim.fn.exists("*GitGutterGetHunkSummary") > 0
-		end
-
-		local function GitDiff()
-			local dict = vim.b.gitsigns_status_dict
-			if not dict then
-				return ""
-			end
-
-			-- Utility to get fg color only
-			local function hex(hl_name, fallback)
-				local ok, hl = pcall(vim.api.nvim_get_hl, 0, { name = hl_name, link = false })
-				return ok and string.format("#%06x", hl.fg or fallback) or string.format("#%06x", fallback)
-			end
-
-			-- Only set foreground color and bold (no bg)
-			vim.api.nvim_set_hl(0, "GitDiffAddHl", { fg = hex("Added", 0x00ff00), bold = true })
-			vim.api.nvim_set_hl(0, "GitDiffChangeHl", { fg = hex("Changed", 0xffff00), bold = true })
-			vim.api.nvim_set_hl(0, "GitDiffDeleteHl", { fg = hex("Removed", 0xff0000), bold = true })
-
-			local parts = {}
-			if dict.added and dict.added > 0 then
-				table.insert(parts, " " .. dict.added)
-			end
-			if dict.changed and dict.changed > 0 then
-				table.insert(parts, " " .. dict.changed)
-			end
-			if dict.removed and dict.removed > 0 then
-				table.insert(parts, " " .. dict.removed)
-			end
-
-			table.insert(parts, "") -- reset highlight
-
-			return table.concat(parts, " ")
-		end
-
-		local function LspStatus()
-			local max_size = math.max(10, (vim.o.columns + 2) / 2)
-			local status = require("lsp-progress").progress({ max_size = max_size })
-			return type(status) == "string" and string.len(status) > 0 and status or ""
-		end
-
-		local function Location()
-			return " %3l:%-2v"
-		end
-
-		local function Progress()
-			local bar = " "
-			local line_fraction = math.floor(vim.fn.line(".") / vim.fn.line("$") * 100)
-			if line_fraction >= 100 then
-				return bar .. "Bot "
-			elseif line_fraction <= 0 then
-				return bar .. "Top "
-			else
-				return string.format("%s%2d%%%% ", bar, line_fraction)
-			end
-		end
-
-		local function CursorHex()
-			return " 0x%04B"
-		end
-
-		local function CustomeStatusColor()
-			local hl = vim.api.nvim_get_hl(0, { name = "DiagnosticHint", link = false })
-			return { fg = string.format("#%06x", hl.fg or 0xFF8800), gui = "bold" }
-		end
-
-		local function CodeiumStatusCondition()
-			return vim.api.nvim_call_function("codeium#GetStatusString", {}) ~= "OFF"
-		end
-
-		local function CodeiumStatus()
-			local status = vim.api.nvim_call_function("codeium#GetStatusString", {})
-			local mode = vim.fn.mode()
-
-			if mode == "n" then
-				return "󰚩" -- Icon for ON in normal mode
-			elseif mode == "i" then
-				return status -- '3/8', '0', '*'
-			else
-				return ""
-			end
-		end
-
-		local function MacroRecordingCondition()
-			return vim.fn.reg_recording() ~= ""
-		end
-
-		local function MacroRecording()
-			local rec = vim.fn.reg_recording()
-			return "  " .. rec
-		end
-
-		local empty_component_separators = { left = "", right = "" }
-		local empty_section_separators = { left = "", right = "" }
-
-		-- style-1: A > B > C ---- X < Y < Z
-		local angle_component_separators = { left = "", right = "" }
-		local angle_section_separators = { left = "", right = "" }
-
-		-- style-2: A \ B \ C ---- X / Y / Z
-		local slash_component_separators = { left = "", right = "" }
-		local slash_section_separators = { left = "", right = "" }
+		local lazy_status = require("lazy.status")
 
 		local diagnostic = {
-			signs = {
-				error = "", -- nf-fa-times \uf00d
-				warning = "", -- nf-fa-warning \uf071
-				info = "", -- nf-fa-info_circle \uf05a
-				hint = "", -- nf-fa-bell \uf0f3
+			symbols = {
+				error = " ",
+				warn = " ",
+				info = " ",
+				hint = " ",
 			},
 		}
-		local config = {
+
+		-- Map vim modes to lualine highlight groups (populated by theme = "auto")
+		local mode_hl = {
+			n  = "lualine_a_normal",
+			i  = "lualine_a_insert",
+			v  = "lualine_a_visual",
+			V  = "lualine_a_visual",
+			["\22"] = "lualine_a_visual", -- visual block
+			c  = "lualine_a_command",
+			R  = "lualine_a_replace",
+			t  = "lualine_a_terminal",
+		}
+
+		local function mode_color()
+			local hl_name = mode_hl[vim.fn.mode()] or "lualine_a_normal"
+			local hl = vim.api.nvim_get_hl(0, { name = hl_name, link = false })
+			local bg = hl.bg and string.format("#%06x", hl.bg)
+			return { fg = bg or "NONE", bg = "NONE" }
+		end
+
+		require("lualine").setup({
 			options = {
 				globalstatus = true,
 				theme = "auto",
-				icons_enabled = true,
-				component_separators = angle_component_separators,
-				section_separators = angle_section_separators,
-				refresh = {
-					statusline = 3000,
-				},
+				component_separators = { left = "", right = "" },
+				section_separators = { left = "", right = "" },
 			},
 			sections = {
-				lualine_a = { "mode" },
-				lualine_b = {
-					{ GitBranch, cond = GitBranchCondition },
+				lualine_a = {
 					{
-						GitStatus,
-						cond = GitStatusCondition,
-						color = GitStatusColor,
-						padding = { left = 1, right = 1 },
+						function() return "⬤" end,
+						color = mode_color,
+						padding = { left = 1, right = 0 },
 					},
+				},
+				lualine_b = {
+					{
+						"branch",
+						fmt = function(s) return #s > 20 and s:sub(1, 20) .. "…" or s end,
+					},
+					"diff",
 				},
 				lualine_c = {
 					{
 						"filename",
+						color = mode_color,
 						file_status = true,
 						symbols = {
-							modified = "[]", -- Text to show when the file is modified.
-							readonly = "[]", -- Text to show when the file is non-modifiable or readonly.
-							unnamed = "[No Name]", -- Text to show for unnamed buffers.
-							newfile = "[New]", -- Text to show for newly created file before first write
+							modified = "[●]",
+							readonly = "[]",
+							unnamed = "[No Name]",
+							newfile = "[New]",
 						},
 					},
-					{
-						"diff",
-						-- cond = GitDiffCondition,
-						-- GitDiff,
-						padding = 1,
-					},
-					LspStatus,
+					"lsp_status",
 				},
 				lualine_x = {
 					{
 						lazy_status.updates,
 						cond = lazy_status.has_updates,
-						color = CustomeStatusColor,
+						color = { fg = "#ff9e64" },
 					},
-					{
-						MacroRecording,
-						cond = MacroRecordingCondition,
-						color = CustomeStatusColor,
-					},
-					{
-						CodeiumStatus,
-						cond = CodeiumStatusCondition,
-						color = CustomeStatusColor,
-						padding = 2,
-					},
-
-					{ "searchcount", maxcount = 100, timeout = 300, color = CustomeStatusColor },
-					{
-						"diagnostics",
-						symbols = {
-							error = diagnostic.signs.error .. " ",
-							warn = diagnostic.signs.warning .. " ",
-							info = diagnostic.signs.info .. " ",
-							hint = diagnostic.signs.hint .. " ",
-						},
-					},
+					{ "diagnostics", symbols = diagnostic.symbols },
 					"filetype",
 				},
-				lualine_y = {
-					{
-						"fileformat",
-						symbols = {
-							unix = " LF", -- e712
-							dos = " CRLF", -- e70f
-							mac = " CR", -- e711
-						},
-					},
-					{
-						"encoding",
-						fmt = function(text)
-							local FileEncodingIcons = {
-								["utf-8"] = "󰉿",
-								["utf-16"] = "󰊀",
-								["utf-32"] = "󰊁",
-								["utf-8mb4"] = "󰊂",
-								["utf-16le"] = "󰊃",
-								["utf-16be"] = "󰊄",
-							}
-							local icon = FileEncodingIcons[text]
-							if str.empty(icon) then
-								return text
-							else
-								return icon .. " " .. text
-							end
-						end,
-					},
-				},
-				lualine_z = {
-					{ Location, padding = { left = 1, right = 0 } },
-					{ Progress, padding = { left = 1, right = 0 } },
-				},
+				lualine_y = { "fileformat", "encoding" },
+				lualine_z = { "location", "progress" },
 			},
-		}
-
-		require("lualine").setup(config)
-
-		-- listen to lsp-progress event and refresh
-		local lualine_augroup = vim.api.nvim_create_augroup("lualine_augroup", { clear = true })
-		vim.api.nvim_create_autocmd("User", {
-			group = lualine_augroup,
-			pattern = { "LspProgressStatusUpdated", "GitGutter", "LualineGitBranchUpdated" },
-			callback = function()
-				require("lualine").refresh({
-					place = { "statusline" },
-				})
-			end,
 		})
-		vim.api.nvim_create_autocmd({ "ModeChanged", "BufReadPre", "BufNewFile", "WinEnter" }, {
-			group = lualine_augroup,
-			callback = function()
-				require("lualine").refresh({
-					place = { "statusline" },
-				})
-			end,
-		})
-
-		-- git branch info
-
-		-- When current buffer is a file, get its directory.
-		--- @return string?
-		local function get_buffer_dir()
-			local bufnr = vim.api.nvim_get_current_buf()
-			if type(bufnr) == "number" and bufnr > 0 then
-				local bufname = vim.api.nvim_buf_get_name(bufnr)
-				if type(bufname) == "string" and string.len(bufname) > 0 then
-					local bufdir = vim.fn.fnamemodify(bufname, ":h")
-					if type(bufdir) == "string" and string.len(bufdir) > 0 and vim.fn.isdirectory(bufdir) > 0 then
-						return bufdir
-					end
-				end
-			end
-
-			return nil
-		end
-
-		-- Parse the output lines of `git status -b --porcelain=v2`.
-		-- Get the branch name, ahead count, behind count, and if changed.
-		--
-		--- @param status_lines string[]
-		--- @return {branch:string?,ahead:integer?,behind:integer?,changed:boolean?}?
-		local function parse_git_status(status_lines)
-			local result = {}
-			for _, line in ipairs(status_lines) do
-				if str.startswith(line, "# branch.head") then
-					local branch_name = string.sub(line, 14)
-					result["branch"] = str.trim(branch_name)
-				end
-				if str.startswith(line, "# branch.ab") then
-					local ab_splits = str.split(line, " ", { trimempty = true })
-					if tbl.list_not_empty(ab_splits) then
-						for _, ab in ipairs(ab_splits) do
-							if str.startswith(ab, "+") and string.len(ab) > 1 then
-								local a_count = tonumber(string.sub(ab, 2))
-								if type(a_count) == "number" and a_count > 0 then
-									result["ahead"] = a_count
-								end
-							end
-							if str.startswith(ab, "-") and string.len(ab) > 1 then
-								local b_count = tonumber(string.sub(ab, 2))
-								if type(b_count) == "number" and b_count > 0 then
-									result["behind"] = b_count
-								end
-							end
-						end
-					end
-				end
-				if not str.startswith(line, "# branch") then
-					local changed_splits = str.split(line, " ", { plain = true, trimempty = true })
-					if tbl.list_not_empty(changed_splits) and tonumber(changed_splits[1]) ~= nil then
-						result["changed"] = true
-					end
-				end
-			end
-
-			if tbl.tbl_not_empty(result) then
-				return result
-			else
-				return nil
-			end
-		end
-
-		local updating_git_branch = false
-		local function update_git_branch()
-			if updating_git_branch then
-				return
-			end
-			updating_git_branch = true
-
-			local cwd = get_buffer_dir()
-			local status_info = {}
-
-			vim.system({ "git", "-c", "color.status=never", "status", "-b", "--porcelain=v2" }, {
-				cwd = cwd,
-				text = true,
-			}, function(result)
-				vim.schedule(function()
-					if result.code == 0 and result.stdout then
-						-- Split stdout into lines
-						for line in result.stdout:gmatch("[^\r\n]+") do
-							if type(line) == "string" and #line > 0 then
-								table.insert(status_info, line)
-							end
-						end
-
-						if tbl.list_not_empty(status_info) then
-							local branch_status = parse_git_status(status_info) --[[@as table]]
-
-							-- branch name
-							if tbl.tbl_not_empty(branch_status) and str.not_empty(branch_status.branch) then
-								git_branch_cache = branch_status.branch --[[@as string]]
-							end
-
-							-- status info
-							if tbl.tbl_not_empty(branch_status) then
-								git_status_cache = branch_status
-							else
-								git_status_cache = nil
-							end
-						end
-					end
-
-					vim.api.nvim_exec_autocmds("User", {
-						pattern = "LualineGitBranchUpdated",
-						modeline = false,
-					})
-
-					vim.schedule(function()
-						updating_git_branch = false
-					end)
-				end)
-			end)
-		end
-
-		vim.api.nvim_create_autocmd({
-			"FocusGained",
-			"FocusLost",
-			"TermLeave",
-			"TermClose",
-			"DirChanged",
-			"BufWritePost",
-			"FileWritePost",
-			"BufEnter",
-			"VimEnter",
-		}, {
-			group = lualine_augroup,
-			callback = update_git_branch,
-		})
-
-		vim.api.nvim_create_autocmd({ "RecordingEnter", "RecordingLeave" }, {
-			callback = function()
-				vim.schedule(function()
-					require("lualine").refresh()
-				end)
-			end,
-		})
-
-		vim.api.nvim_create_user_command("GitSignsDebug", function()
-			local status = vim.b.gitsigns_status or "No status"
-			local dict = vim.b.gitsigns_status_dict
-
-			print("Gitsigns Status:", status)
-
-			if dict then
-				print("Head:", dict.head or "N/A")
-				print("Added: ", dict.added or 0)
-				print("Changed: ", dict.changed or 0)
-				print("Removed: ", dict.removed or 0)
-				print("Git Root:", dict.root or "N/A")
-				print("Git cache:", git_branch_cache or "N/A")
-				print("Git status:", vim.inspect(git_status_cache) or "N/A")
-			else
-				print("gitsigns_status_dict not available")
-			end
-		end, {})
 	end,
 }

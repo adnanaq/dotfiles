@@ -45,6 +45,98 @@ return {
 			desc = "Toggle Zen Mode",
 			mode = "n",
 		},
+		-- Picker Keymaps (Replacement for Telescope)
+		{
+			"<leader>ff",
+			function()
+				Snacks.picker.files()
+			end,
+			desc = "Find Files",
+		},
+		{
+			"<leader>fb",
+			function()
+				Snacks.picker.buffers()
+			end,
+			desc = "Find Buffers",
+		},
+		{
+			"<leader>fr",
+			function()
+				Snacks.picker.recent()
+			end,
+			desc = "Recent Files",
+		},
+		{
+			"<leader>fc",
+			function()
+				Snacks.picker.grep()
+			end,
+			desc = "Grep Code",
+		},
+		{
+			"<leader>fw",
+			function()
+				Snacks.picker.grep_word()
+			end,
+			desc = "Grep Word",
+		},
+		{
+			"<leader>fs",
+			function()
+				Snacks.picker.lsp_symbols()
+			end,
+			desc = "LSP Symbols",
+		},
+		{
+			"<leader>fh",
+			function()
+				Snacks.picker.help()
+			end,
+			desc = "Help Tags",
+		},
+		{
+			"<leader>fk",
+			function()
+				Snacks.picker.keymaps()
+			end,
+			desc = "Keymaps",
+		},
+		{
+			"<leader>fT",
+			function()
+				Snacks.picker.colorschemes()
+			end,
+			desc = "Colorschemes",
+		},
+		{
+			"<leader>ft",
+			function()
+				Snacks.picker.todo_comments()
+			end,
+			desc = "Todo Comments",
+		},
+		{
+			"<leader>fgc",
+			function()
+				Snacks.picker.git_commits()
+			end,
+			desc = "Git Commits",
+		},
+		{
+			"<leader>fgb",
+			function()
+				Snacks.picker.git_log()
+			end,
+			desc = "Git Log (Buffer)",
+		},
+		{
+			"<leader>/",
+			function()
+				Snacks.picker.lines()
+			end,
+			desc = "Fuzzily search in current buffer",
+		},
 	},
 	opts = {
 		bigfile = { enabled = true },
@@ -53,25 +145,25 @@ return {
 				pick = nil,
 				---@type snacks.dashboard.Item[]
 				keys = {
-					{ icon = " ", key = "f", desc = "Find File", action = ":lua Snacks.dashboard.pick('files')" },
+					{ icon = " ", key = "f", desc = "Find File", action = ":lua Snacks.picker.files()" },
 					{ icon = " ", key = "n", desc = "New File", action = ":ene | startinsert" },
 					{
 						icon = " ",
 						key = "g",
 						desc = "Find Text",
-						action = ":lua Snacks.dashboard.pick('live_grep')",
+						action = ":lua Snacks.picker.grep()",
 					},
 					{
 						icon = " ",
 						key = "r",
 						desc = "Recent Files",
-						action = ":lua Snacks.dashboard.pick('oldfiles')",
+						action = ":lua Snacks.picker.recent()",
 					},
 					{
 						icon = " ",
 						key = "c",
 						desc = "Config",
-						action = ":lua Snacks.dashboard.pick('files', {cwd = vim.fn.stdpath('config')})",
+						action = ":lua Snacks.picker.files({cwd = vim.fn.stdpath('config')})",
 					},
 					{ icon = " ", key = "s", desc = "Restore Session", section = "session" },
 					{
@@ -107,8 +199,31 @@ return {
 		},
 		explorer = { enabled = false },
 		indent = { enabled = true },
-		input = { enabled = false },
-		picker = { enabled = false },
+		input = { enabled = true },
+		picker = {
+			enabled = true,
+			ui_select = true, -- Replaces telescope-ui-select
+			sources = {
+				explorer = {
+					hidden = true,
+					ignored = true,
+				},
+			},
+			win = {
+				input = {
+					keys = {
+						["<C-t>"] = { "trouble_open", mode = { "n", "i" } },
+						["<C-k>"] = { "history_prev", mode = { "i", "n" } },
+						["<C-j>"] = { "history_next", mode = { "i", "n" } },
+					},
+				},
+			},
+			actions = {
+				trouble_open = function(picker)
+					require("trouble").open({ mode = "snacks" })
+				end,
+			},
+		},
 		notifier = {
 			enabled = true,
 			style = "fancy",

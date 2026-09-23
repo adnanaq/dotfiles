@@ -45,3 +45,6 @@ opt.mouse = "a" -- enable mouse support
 
 -- global statusline
 vim.o.laststatus = 3
+
+-- default border for floating windows (LSP hover, diagnostics, etc.)
+vim.o.winborder = "rounded"

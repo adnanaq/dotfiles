@@ -20,47 +20,7 @@ return {
 		},
 	},
 
-	-- Ui Select
-	{
-		"nvim-telescope/telescope-ui-select.nvim",
-	},
-
-	-- Codium
-	{
-		"Exafunction/windsurf.vim",
-	},
-
-	-- Vim Maximizer
-	{
-		"szw/vim-maximizer",
-	},
-
-	-- Dressing
-	{
-		"stevearc/dressing.nvim",
-		event = "VeryLazy",
-	},
-
-	-- Noice
-	-- {
-	-- 	"folke/noice.nvim",
-	-- 	event = "VeryLazy",
-	-- 	opts = {
-	-- 		-- add any options here
-	-- 	},
-	-- 	dependencies = {
-	-- 		"MunifTanjim/nui.nvim",
-	-- 		"rcarriga/nvim-notify",
-	-- 	},
-	-- 	config = function()
-	-- 		require("noice").setup({
-	-- 			notify = { enabled = false },
-	-- 			lsp = { signature = { enabled = false } },
-	-- 		})
-	-- 	end,
-	-- },
-
-	-- Todo Commentsc
+	-- Todo Comments
 	{
 		"folke/todo-comments.nvim",
 		event = { "BufReadPre", "BufNewFile" },
@@ -114,92 +74,26 @@ return {
 		config = true,
 	},
 
-	-- Indent Blankline
-	{
-		"lukas-reineke/indent-blankline.nvim",
-		event = { "BufReadPre", "BufNewFile" },
-		main = "ibl",
-		opts = {
-			indent = { char = "┊" },
-		},
-	},
-
 	-- Java Development
 	{
 		"mfussenegger/nvim-jdtls",
 	},
 
-	-- Comment
+	-- Context-aware comments for JSX/TSX/Vue (hooks into native gc operator)
 	{
-		"numToStr/Comment.nvim",
+		"JoosepAlviste/nvim-ts-context-commentstring",
 		event = { "BufReadPre", "BufNewFile" },
-		dependencies = {
-			"JoosepAlviste/nvim-ts-context-commentstring",
-		},
-		config = function()
-			-- import comment plugin safely
-			local comment = require("Comment")
-
-			local ts_context_commentstring = require("ts_context_commentstring.integrations.comment_nvim")
-
-			-- enable comment
-			comment.setup({
-				-- for commenting tsx, jsx, svelte, html files
-				pre_hook = ts_context_commentstring.create_pre_hook(),
-			})
+		opts = { enable_autocmd = false },
+		init = function()
+			local get_option = vim.filetype.get_option
+			vim.filetype.get_option = function(filetype, option)
+				return option == "commentstring"
+						and require("ts_context_commentstring.internal").calculate_commentstring()
+					or get_option(filetype, option)
+			end
 		end,
 	},
 
-	-- Neoscroll
-	{
-		"karb94/neoscroll.nvim",
-		opts = {},
-		config = function()
-			local neoscroll = require("neoscroll")
-
-			neoscroll.setup()
-
-			vim.keymap.set({ "n", "v" }, "<C-d>", function()
-				neoscroll.ctrl_d({ duration = 200 })
-				vim.defer_fn(function()
-					vim.api.nvim_feedkeys("zz", "n", false)
-				end, 250) -- Slightly more than ctrl_d's duration
-			end, { desc = "Smooth scroll down and center" })
-
-			vim.keymap.set({ "n", "v" }, "<C-u>", function()
-				neoscroll.ctrl_u({ duration = 200 })
-				vim.defer_fn(function()
-					vim.api.nvim_feedkeys("zz", "n", false)
-				end, 250)
-			end, { desc = "Smooth scroll up and center" })
-		end,
-	},
-
-	-- Smear Cursor
-	{
-		"sphamba/smear-cursor.nvim",
-		opts = {},
-	},
-
-	-- Fzf Native
-	{
-		"nvim-telescope/telescope-fzf-native.nvim",
-		build = "make",
-	},
-
-	-- {
-	-- 	"nvim-telescope/telescope-live-grep-args.nvim",
-	-- },
-	{
-		"tpope/vim-dadbod",
-		dependencies = {
-			"kristijanhusak/vim-dadbod-ui",
-			"kristijanhusak/vim-dadbod-completion",
-		},
-		config = function()
-			vim.g.db_ui_use_nerd_fonts = 1
-		end,
-	},
 	{
 		"altermo/ultimate-autopair.nvim",
 		event = { "InsertEnter", "CmdlineEnter" },

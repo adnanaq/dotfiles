@@ -5,32 +5,12 @@ return {
 			"rcarriga/nvim-dap-ui",
 			"theHamsta/nvim-dap-virtual-text",
 			"nvim-neotest/nvim-nio",
-			"leoluz/nvim-dap-go",
 		},
 		config = function()
 			local dap = require("dap")
 			local dap_ui = require("dapui")
-			local dap_go = require("dap-go")
 
 			dap_ui.setup()
-			dap_go.setup({
-				dap_configurations = {
-					{
-						type = "go",
-						name = "Attach remote",
-						mode = "remote",
-						request = "attach",
-					},
-				},
-				tests = {
-					-- enables verbosity when running the test.
-					verbose = false,
-				},
-				delve = {
-					path = "dlv",
-					port = "38697",
-				},
-			})
 
 			require("nvim-dap-virtual-text").setup({
 				-- Mitigate the chance of leaking tokens here. Probably won't stop it from happening...

@@ -32,9 +32,10 @@ return {
 			"lua",
 			"markdown",
 			"markdown_inline",
-			"prisma",
+	
 			"proto",
 			"python",
+			"rust",
 			"query",
 			"ruby",
 			"scss",
@@ -85,6 +86,20 @@ return {
 		vim.keymap.set({ "x", "o" }, "i=", function()
 			ts_select.select_textobject("@assignment.inner", "textobjects")
 		end, { desc = "Inner Assignment" })
+		vim.keymap.set({ "x", "o" }, "a=l", function()
+			ts_select.select_textobject("@assignment.lhs", "textobjects")
+		end, { desc = "Assignment LHS" })
+		vim.keymap.set({ "x", "o" }, "a=r", function()
+			ts_select.select_textobject("@assignment.rhs", "textobjects")
+		end, { desc = "Assignment RHS" })
+
+		-- Return textobjects
+		vim.keymap.set({ "x", "o" }, "aR", function()
+			ts_select.select_textobject("@return.outer", "textobjects")
+		end, { desc = "Outer Return" })
+		vim.keymap.set({ "x", "o" }, "iR", function()
+			ts_select.select_textobject("@return.inner", "textobjects")
+		end, { desc = "Inner Return" })
 
 		-- Property textobjects
 		vim.keymap.set({ "x", "o" }, "a:", function()

@@ -72,7 +72,7 @@ vim.api.nvim_create_autocmd("LspAttach", {
 					vim.keymap.set(m, keys, func, { buffer = e.buf, desc = "LSP: " .. desc })
 				end
 			else
-				vim.keymap.set(mode, keys, func, { buffer = 0, desc = "LSP: " .. desc })
+				vim.keymap.set(mode, keys, func, { buffer = e.buf, desc = "LSP: " .. desc })
 			end
 		end
 
@@ -82,13 +82,23 @@ vim.api.nvim_create_autocmd("LspAttach", {
 		-- Code navigation and refactoring
 		map("gra", vim.lsp.buf.code_action, "Code Actions", { "n", "v" })
 		map("grn", vim.lsp.buf.rename, "Rename")
-		map("grr", require("telescope.builtin").lsp_references, "Go to References")
-		map("grd", require("telescope.builtin").lsp_definitions, "Go to Definitions")
+		map("grr", function()
+			require("snacks").picker.lsp_references()
+		end, "Go to References")
+		map("grd", function()
+			require("snacks").picker.lsp_definitions()
+		end, "Go to Definitions")
 		map("grD", vim.lsp.buf.declaration, "Go to Declaration")
-		map("gri", require("telescope.builtin").lsp_implementations, "Go to Implementations")
-		map("grt", require("telescope.builtin").lsp_type_definitions, "Type Definitions")
-		map("grS", ":LspRestart<CR>", "Restart")
-		map("grs", vim.lsp.buf.document_symbol, "Document Symbols")
+		map("gri", function()
+			require("snacks").picker.lsp_implementations()
+		end, "Go to Implementations")
+		map("grt", function()
+			require("snacks").picker.lsp_type_definitions()
+		end, "Type Definitions")
+		map("grS", "<cmd>lsp restart<CR>", "Restart")
+		map("grs", function()
+			require("snacks").picker.lsp_symbols()
+		end, "Document Symbols")
 		map("grk", function()
 			vim.lsp.buf.signature_help({ border = "single" })
 		end, "Signature Help")
@@ -103,7 +113,7 @@ vim.api.nvim_create_autocmd("LspAttach", {
 			print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
 		end, "List Workspace Folder")
 		map("grws", function()
-			vim.lsp.buf.workspace_symbol()
+			require("snacks").picker.lsp_workspace_symbols()
 		end, "Workspace Symbol")
 
 		-- Get client

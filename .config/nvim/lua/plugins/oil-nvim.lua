@@ -9,7 +9,7 @@ return {
 		local oil = require("oil")
 		oil.setup({
 			default_file_explorer = true,
-			delete_to_trash = false,
+			delete_to_trash = true,
 			skip_confirm_for_simple_edits = true,
 			view_options = {
 				natural_order = true,

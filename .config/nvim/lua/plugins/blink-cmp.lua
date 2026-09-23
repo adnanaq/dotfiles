@@ -52,9 +52,6 @@ return {
 
 			sources = {
 				default = { "lsp", "path", "snippets", "buffer" },
-				per_filetype = {
-					sql = { "snippets", "dadbod", "buffer" },
-				},
 				providers = {
 					lsp = {
 						name = "LSP",
@@ -80,10 +77,6 @@ return {
 						min_keyword_length = 5,
 						max_items = 5,
 						score_offset = 50,
-					},
-					dadbod = {
-						name = "Dadbod",
-						module = "vim_dadbod_completion.blink",
 					},
 				},
 			},

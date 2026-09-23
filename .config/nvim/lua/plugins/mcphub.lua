@@ -1,41 +1,41 @@
 return {
-	"ravitemer/mcphub.nvim",
-	dependencies = {
-		"nvim-lua/plenary.nvim",
-	},
-	build = "bundled_build.lua", -- Auto-download bundled binary
-	config = function()
-		-- Try to find mcp-hub in common locations
-		local mcp_hub_cmd = vim.fn.exepath("mcp-hub")
-		if mcp_hub_cmd == "" then
-			-- Fallback to explicit NVM path if not found in PATH
-			mcp_hub_cmd = "/home/dani/.nvm/versions/node/v24.6.0/bin/mcp-hub"
-		end
-
-		require("mcphub").setup({
-			cmd = mcp_hub_cmd,
-			builtin_tools = {
-				edit_file = {
-					enabled = true,
-					parser = {
-						track_issues = true, -- Track and report parsing issues
-					},
-					locator = {
-						fuzzy_threshold = 0.8, -- Allow fuzzy matching for search blocks
-					},
-					ui = {
-						show_diff = true, -- Show diff before applying
-						keybindings = {
-							accept = "<CR>", -- Accept changes with Enter
-							reject = "<Esc>", -- Reject changes with Esc
-						},
-					},
-				},
-				-- Other built-in tools
-				write_file = { enabled = true },
-				read_file = { enabled = true },
-				list_directory = { enabled = true },
-			},
-		})
-	end,
+	-- "ravitemer/mcphub.nvim",
+	-- dependencies = {
+	-- 	"nvim-lua/plenary.nvim",
+	-- },
+	-- build = "bundled_build.lua", -- Auto-download bundled binary
+	-- config = function()
+	-- 	-- Try to find mcp-hub in common locations
+	-- 	local mcp_hub_cmd = vim.fn.exepath("mcp-hub")
+	-- 	if mcp_hub_cmd == "" then
+	-- 		-- Fallback to explicit NVM path if not found in PATH
+	-- 		mcp_hub_cmd = "/home/dani/.nvm/versions/node/v24.6.0/bin/mcp-hub"
+	-- 	end
+	--
+	-- 	require("mcphub").setup({
+	-- 		cmd = mcp_hub_cmd,
+	-- 		builtin_tools = {
+	-- 			edit_file = {
+	-- 				enabled = true,
+	-- 				parser = {
+	-- 					track_issues = true, -- Track and report parsing issues
+	-- 				},
+	-- 				locator = {
+	-- 					fuzzy_threshold = 0.8, -- Allow fuzzy matching for search blocks
+	-- 				},
+	-- 				ui = {
+	-- 					show_diff = true, -- Show diff before applying
+	-- 					keybindings = {
+	-- 						accept = "<CR>", -- Accept changes with Enter
+	-- 						reject = "<Esc>", -- Reject changes with Esc
+	-- 					},
+	-- 				},
+	-- 			},
+	-- 			-- Other built-in tools
+	-- 			write_file = { enabled = true },
+	-- 			read_file = { enabled = true },
+	-- 			list_directory = { enabled = true },
+	-- 		},
+	-- 	})
+	-- end,
 }
