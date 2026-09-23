@@ -7,12 +7,10 @@ export NVM_DIR="$HOME/.nvm"
 export PATH="$PATH:/usr/local/go/bin" # Go path for global access
 export PATH="$PATH:$HOME/go/bin" # Go package documentation
 export CGO_ENABLED=1 # Enable cgo to allow Go's race detector to function properly
-export PATH="$PATH:$HOME/.local/bin" # Protocol Buffer Compiler
 export PATH="$PATH:/opt/nvim-linux-x86_64/bin" # Neovim path for global access
-export PATH="$HOME/.local/bin:$PATH" #Fdfind
+export PATH="$HOME/.local/bin:$PATH" # Protocol Buffer Compiler, Fdfind
 export PATH="$HOME/.cargo/bin:$PATH" #Rust
 FPATH="$HOME/.docker/completions:$FPATH"
-set ENABLE_TOOL_SEARCH=true # Serena on-demand tool loading
 # 2. Fast-loading utility functions or static sources
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
